@@ -26,8 +26,6 @@ if (R2_ORIGIN === undefined) {
   throw new TypeError("Missing R2_ORIGIN environment variable.");
 }
 
-console.log(R2_SECRET_KEY);
-
 const flags = parse(Deno.args, {
   string: ["sites"],
 });

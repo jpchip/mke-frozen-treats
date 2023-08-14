@@ -20,9 +20,3 @@ jobs:
           project: mke-frozen-treats # the name of the project on Deno Deploy
           entrypoint: server.ts # the entrypoint to deploy
           root: site
-      - name: Deploy Importer to Deno Deploy
-        uses: denoland/deployctl@v1
-        with:
-          project: mke-frozen-treats-importer # the name of the project on Deno Deploy
-          entrypoint: import.ts # the entrypoint to deploy
-          root: importer
