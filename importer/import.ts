@@ -19,6 +19,7 @@ const flags = parse(Deno.args, {
         const flavor = await siteScript.load(browser, site);
         site.flavorOfTheDay = flavor;
     }
+    await browser.close();
     
     siteJson.lastUpdatedOn = new Date().toUTCString();
     

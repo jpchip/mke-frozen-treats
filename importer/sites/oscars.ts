@@ -20,7 +20,5 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
         flavorTd
     );
 
-    await browser.close();
-
     return flavorOfTheDay;
 }
