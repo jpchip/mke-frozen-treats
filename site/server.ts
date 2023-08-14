@@ -7,7 +7,7 @@ Deno.serve({port: 80}, (req: Request) => {
         return serveFile(req, `${Deno.cwd()}/favicon.ico`);
     }
 
-    if (pathname === "/flavors.json") {
+    if (pathname === "/flavorsOfTheDay.json") {
         return serveFile(req, `${Deno.cwd()}/output.json`);
     }
 

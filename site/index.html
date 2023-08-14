@@ -11,7 +11,7 @@
   </head>
   <body>
     <div class="container">
-        <div x-data="{sites: [{name: 'test'}], lastUpdatedOn: ''}" x-init="axios.get('/flavors.json').then(r => {
+        <div x-data="{sites: [{name: 'test'}], lastUpdatedOn: ''}" x-init="axios.get('https://pub-95b57a07245c43ce89fc0ab10a794e77.r2.dev/flavorsOfTheDay.json').then(r => {
             sites = r.data.sites.sort((a, b) => a.name.localeCompare(b.name));
             lastUpdatedOn = r.data.lastUpdatedOn;
         });">

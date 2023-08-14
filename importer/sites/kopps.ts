@@ -12,7 +12,7 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
     const flavorsOfTheDay = await todayDivEl.$$eval('.flavor-card h3', options => {
         return options.map(option => option.textContent);
       });
-    console.log(flavorsOfTheDay);
+    //console.log(flavorsOfTheDay);
 
     return flavorsOfTheDay.join(',');
 }
