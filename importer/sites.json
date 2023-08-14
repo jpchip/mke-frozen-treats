@@ -5,6 +5,12 @@
             "url" : "https://www.oscarscustard.com/index.php/flavors/", 
             "script": "./sites/oscars.ts", 
             "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Kopps", 
+            "url" : "https://kopps.com/flavor-preview", 
+            "script": "./sites/kopps.ts", 
+            "flavorOfTheDay": "" 
         }
     ]
 }

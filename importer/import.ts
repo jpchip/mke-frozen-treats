@@ -8,21 +8,24 @@ const flags = parse(Deno.args, {
   });
   console.log(flags.sites);
 
-const browser = await puppeteer.launch();
+  if(flags.sites) {
+    const browser = await puppeteer.launch();
 
-const siteJson = await getJson('./sites.json');
-const sites: MkeFrozenTreatsImporter.Site[] = siteJson.sites;
+    const siteJson = await getJson(flags.sites);
+    const sites: MkeFrozenTreatsImporter.Site[] = siteJson.sites;
+    
+    for (const site of sites) {
+        const siteScript = await import(site.script);
+        const flavor = await siteScript.load(browser, site);
+        site.flavorOfTheDay = flavor;
+    }
+    
+    siteJson.lastUpdatedOn = new Date().toUTCString();
+    
+    console.log(siteJson);
+    
+    writeJson('./output.json', siteJson)
+    
+  }
 
-for (const site of sites) {
-    const siteScript = await import(site.script);
-    const flavor = await siteScript.load(browser, site);
-    site.flavorOfTheDay = flavor;
-    console.log(flavor);
-}
-
-siteJson.lastUpdatedOn = new Date().toUTCString();
-
-console.log(siteJson);
-
-writeJson('./output.json', siteJson)
 
