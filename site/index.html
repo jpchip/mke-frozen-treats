@@ -11,7 +11,9 @@
   </head>
   <body>
     <div class="container">
-        <div x-data="{sites: [{name: 'test'}], lastUpdatedOn: ''}" x-init="axios.get('https://pub-95b57a07245c43ce89fc0ab10a794e77.r2.dev/flavorsOfTheDay.json').then(r => {
+        <div x-data="{sites: [{name: 'Loading...'}], lastUpdatedOn: ''}" x-init="axios.get('https://pub-95b57a07245c43ce89fc0ab10a794e77.r2.dev/flavorsOfTheDay.json?v=' + new Date().toISOString().split('T')[0], {headers: {
+          'Cache-Control': 'max-age=86400'
+        }}).then(r => {
             sites = r.data.sites.sort((a, b) => a.name.localeCompare(b.name));
             lastUpdatedOn = r.data.lastUpdatedOn;
         });">
