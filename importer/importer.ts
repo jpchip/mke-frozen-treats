@@ -57,7 +57,7 @@ if (!flags.sites) {
           site.flavorOfTheDay = flavor;
         } catch(error) {
           console.log(error);
-          site.flavorOfTheDay = '?';
+          site.flavorOfTheDay = 'See website';
         }
         
     }

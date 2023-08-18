@@ -35,6 +35,12 @@
             "url" : "https://gillesfrozencustard.com/flavor-of-the-day", 
             "script": "./sites/gilles.ts", 
             "flavorOfTheDay": "" 
-        }
+        },
+        { 
+            "name": "Culver's - Brookfield, WI - W Capital Dr", 
+            "url" : "https://www.culvers.com/restaurants/brookfield-capitol", 
+            "script": "./sites/culvers-brookfield.ts", 
+            "flavorOfTheDay": "" 
+        } 
     ]
 }
