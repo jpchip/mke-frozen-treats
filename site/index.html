@@ -14,8 +14,8 @@
     <script src="index.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
   </head>
-  <body>
-    <div class="container">
+  <body class="d-flex flex-column h-100">
+    <div class="container flex-fill">
         <div x-data="{sites: [{name: 'Loading...'}], lastUpdatedOn: ''}" x-init="axios.get('https://pub-95b57a07245c43ce89fc0ab10a794e77.r2.dev/flavorsOfTheDay.json?v=' + new Date().toISOString().split('T')[0], {headers: {
           'Cache-Control': 'max-age=3600'
         }}).then(r => {
