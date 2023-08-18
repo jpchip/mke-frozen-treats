@@ -41,6 +41,18 @@
             "url" : "https://www.culvers.com/restaurants/brookfield-capitol", 
             "script": "./sites/culvers-brookfield.ts", 
             "flavorOfTheDay": "" 
-        } 
+        },
+        { 
+            "name": "Robert's", 
+            "url" : "https://robertsfrozencustard.com/", 
+            "script": "./sites/roberts.ts", 
+            "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Kraverz's", 
+            "url" : "https://www.kraverzcustard.com/FlavorSchedule", 
+            "script": "./sites/kraverz.ts", 
+            "flavorOfTheDay": "" 
+        }
     ]
 }
