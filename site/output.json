@@ -1,1 +1,41 @@
-{"sites":[{"name":"Oscars","url":"https://www.oscarscustard.com/index.php/flavors/","script":"./sites/oscars.ts","flavorOfTheDay":"BLACK RASPBERRY"},{"name":"Kopps","url":"https://kopps.com/flavor-preview","script":"./sites/kopps.ts","flavorOfTheDay":" Orange Dream, Twix"}],"lastUpdatedOn":"Mon, 14 Aug 2023 20:14:45 GMT"}
+{
+    "sites" : [
+        { 
+            "name": "Oscar's", 
+            "url" : "https://www.oscarscustard.com/index.php/flavors/", 
+            "script": "./sites/oscars.ts", 
+            "flavorOfTheDay": "test" 
+        },
+        { 
+            "name": "Kopp's", 
+            "url" : "https://kopps.com/flavor-preview", 
+            "script": "./sites/kopps.ts", 
+            "flavorOfTheDay": "test" 
+        },
+        { 
+            "name": "LeDuc's", 
+            "url" : "https://leducscustard.com/custard-calendar/", 
+            "script": "./sites/leducs.ts", 
+            "flavorOfTheDay": "test" 
+        },
+        { 
+            "name": "Bubba's", 
+            "url" : "https://www.bubbasfrozencustard.com/events", 
+            "script": "./sites/bubbas.ts", 
+            "flavorOfTheDay": "test" 
+        },
+        { 
+            "name": "Murf's", 
+            "url" : "http://www.murfsfrozencustard.com/", 
+            "script": "./sites/murfs.ts", 
+            "flavorOfTheDay": "test" 
+        },
+        { 
+            "name": "Gille's", 
+            "url" : "https://gillesfrozencustard.com/flavor-of-the-day", 
+            "script": "./sites/gilles.ts", 
+            "flavorOfTheDay": "test" 
+        }
+    ],
+    "lastUpdatedOn" : "Fri, 18 Aug 2023 03:30:28 GMT"
+}

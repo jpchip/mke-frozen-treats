@@ -3,7 +3,7 @@ import { parse } from "https://deno.land/std@0.194.0/flags/mod.ts";
 import "https://deno.land/std@0.198.0/dotenv/load.ts";
 import { putObject } from "https://raw.githubusercontent.com/skymethod/denoflare/v0.5.12/common/r2/put_object.ts";
 import { getJson, writeJson } from "./helpers.ts";
-import { MkeFrozenTreatsImporter } from "./import.d.ts";
+import { MkeFrozenTreatsImporter } from "./importer.interface.ts";
 
 const BROWSERLESS_TOKEN = Deno.env.get("BROWSERLESS_TOKEN");
 if (BROWSERLESS_TOKEN === undefined) {
@@ -33,6 +33,7 @@ const flags = parse(Deno.args, {
 if (!flags.sites) {
   flags.sites = './sites.json';
 }
+
 
   if(flags.sites) {
     let browser;

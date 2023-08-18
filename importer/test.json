@@ -1,0 +1,10 @@
+{
+    "sites" : [
+        { 
+            "name": "Gille's", 
+            "url" : "https://gillesfrozencustard.com/flavor-of-the-day", 
+            "script": "./sites/gilles.ts", 
+            "flavorOfTheDay": "" 
+        }
+    ]
+}

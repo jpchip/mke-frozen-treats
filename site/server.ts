@@ -1,4 +1,4 @@
-import { serveFile } from "https://deno.land/std@0.194.0/http/file_server.ts";
+import { serveFile, serveDir } from "https://deno.land/std@0.194.0/http/file_server.ts";
 
 Deno.serve({port: 80}, (req: Request) => {
     const pathname = new URL(req.url).pathname;
@@ -6,6 +6,25 @@ Deno.serve({port: 80}, (req: Request) => {
     if (pathname === "/favicon.ico") {
         return serveFile(req, `${Deno.cwd()}/favicon.ico`);
     }
+
+    if (pathname === "/manifest.json") {
+        return serveFile(req, `${Deno.cwd()}/manifest.json`);
+    }
+
+    if (pathname === "/index.js") {
+        return serveFile(req, `${Deno.cwd()}/index.js`);
+    }
+
+    if (pathname === "/service_worker.js") {
+        return serveFile(req, `${Deno.cwd()}/service_worker.js`);
+    }
+
+    if (pathname.startsWith("/images")) {
+        return serveDir(req, {
+          urlRoot: "images",
+          fsRoot: 'images'
+        });
+      }
 
     if (pathname === "/flavorsOfTheDay.json") {
         return serveFile(req, `${Deno.cwd()}/output.json`);

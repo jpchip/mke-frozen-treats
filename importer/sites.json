@@ -1,15 +1,39 @@
 {
     "sites" : [
         { 
-            "name": "Oscars", 
+            "name": "Oscar's", 
             "url" : "https://www.oscarscustard.com/index.php/flavors/", 
             "script": "./sites/oscars.ts", 
             "flavorOfTheDay": "" 
         },
         { 
-            "name": "Kopps", 
+            "name": "Kopp's", 
             "url" : "https://kopps.com/flavor-preview", 
             "script": "./sites/kopps.ts", 
+            "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "LeDuc's", 
+            "url" : "https://leducscustard.com/custard-calendar/", 
+            "script": "./sites/leducs.ts", 
+            "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Bubba's", 
+            "url" : "https://www.bubbasfrozencustard.com/events", 
+            "script": "./sites/bubbas.ts", 
+            "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Murf's", 
+            "url" : "http://www.murfsfrozencustard.com/", 
+            "script": "./sites/murfs.ts", 
+            "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Gille's", 
+            "url" : "https://gillesfrozencustard.com/flavor-of-the-day", 
+            "script": "./sites/gilles.ts", 
             "flavorOfTheDay": "" 
         }
     ]

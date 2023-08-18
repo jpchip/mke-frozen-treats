@@ -3,18 +3,18 @@ import { Browser } from "https://deno.land/x/puppeteer@16.2.0/vendor/puppeteer-c
 import { MkeFrozenTreatsImporter } from "../importer.interface.ts";
 
 export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site): Promise<string> {
-    console.log('Loading Kopps...');
+    console.log('Loading Gilles...');
     const page = await browser.newPage();
     page.emulateTimezone('America/Chicago');
+
     await page.goto(site.url);
 
-    const todayH2 = await page.waitForXPath(`//h2[contains(text(), "Today")]`);
-    const todayDivEl = await todayH2.getProperty('parentNode');
-
-    const flavorsOfTheDay = await todayDivEl.$$eval('.flavor-card h3', options => {
-        return options.map(option => option.textContent);
-      });
-    //console.log(flavorsOfTheDay);
-
-    return flavorsOfTheDay.join(',');
+    const flavorTd = await page.waitForSelector(`.single-day.today`, { timeout: 2000 });
+    const flavorsOfTheDay = await flavorTd.$$eval('.field-content a', options => {
+        return options.map(option => option.innerText);
+    });
+    if (flavorsOfTheDay.length > 0) {
+        return flavorsOfTheDay.filter((v) => v !== '').join(',');
+    }
+    return '?';
 }
