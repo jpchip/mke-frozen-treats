@@ -37,7 +37,7 @@
             "flavorOfTheDay": "" 
         },
         { 
-            "name": "Culver's: Brookfield, WI - W Capital Dr", 
+            "name": "Culver's: Brookfield - W Capital Dr", 
             "url" : "https://www.culvers.com/restaurants/brookfield-capitol", 
             "script": "./sites/culvers-brookfield.ts", 
             "flavorOfTheDay": "" 
