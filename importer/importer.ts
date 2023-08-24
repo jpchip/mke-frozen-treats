@@ -27,15 +27,19 @@ if (R2_ORIGIN === undefined) {
 }
 
 const flags = parse(Deno.args, {
-  string: ["sites"],
+  string: ["sites", "output"],
 });
 
 if (!flags.sites) {
   flags.sites = './sites.json';
 }
 
+if (!flags.output) {
+  flags.output = '../site/output.json';
+}
 
-  if(flags.sites) {
+
+  if (flags.sites) {
     let browser;
     if (IMPORTER_MODE === 'PRODUCTION') {
       browser = await puppeteer.connect({
@@ -83,7 +87,7 @@ if (!flags.sites) {
         unsignedPayload: true
         });
     } else {
-      writeJson('../site/output.json', siteJson);
+      writeJson(flags.output, siteJson);
     }
   }
 
