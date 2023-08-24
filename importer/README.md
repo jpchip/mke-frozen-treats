@@ -12,4 +12,8 @@ Run script:
 deno run -A --unstable importer.ts --sites ./sites.json
 ```
 
-Generates output.json
+Generates ../sites/output.json by default, by output can be configured with:
+
+```
+deno run -A --unstable importer.ts --sites ./sites.json --output someOtherPlace.json
+```

@@ -18,22 +18,23 @@ deno run -A --unstable importer.ts --sites ./sites.json
 2. Launch the server to view the outputted flavors in a website:
 
 ```shell
-deno run --allow-net --allow-read server.ts
+deno run --allow-env --allow-net --allow-read server.ts
 ```
 
 ## Developing
 
 ### Built With
 
-- Deno
-- Puppeteer
-- alpinejs
-- bootstrap
-- axios
+- [Deno](https://deno.com/)
+- [Puppeteer](https://pptr.dev/)
+- [Alpine.js](https://alpinejs.dev/)
+- [Bootstrap](https://getbootstrap.com/)
+- [Axios](https://axios-http.com/)
+- [ETA](https://eta.js.org/)
 
 ### Prerequisites
 
-- Deno 1.36.1
+- Deno >=1.36.1
 
 ### Setting up Dev
 
@@ -44,6 +45,8 @@ deno run -A --unstable https://deno.land/x/puppeteer@16.2.0/install.ts
 ```
 
 Copy `importer/.env.example` to `.env`. You don't need to touch it beyond that unless you want to make use of browserless.io for scraping and R2 for storing the file.
+
+Copy `site/.env.example` to `.env`. You don't need to touch it beyond that unless you have a custom url to your list of flavors of the day.
 
 ### Building
 
@@ -57,7 +60,7 @@ The website can run anywhere, it just needs to point to the json file generated 
 
 ## Versioning
 
-We can maybe use [SemVer](http://semver.org/) for versioning. For the versions available, see the [link to tags on this repository](/tags).
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [link to tags on this repository](/tags).
 
 
 ## Configuration
@@ -70,7 +73,7 @@ The site the Importer pulls from are defined in the `sites.json`. Each site need
 type LoadFunction = (browser: Browser, site: MkeFrozenTreatsImporter.Site) => string;
 ```
 
-By default the importer loads up the site.json
+By default the importer loads up the site.json located in the importer directory. It outputs to `/sites/output.json` by default, but you can set a custom destination with the `--output` flag. 
 
 ## Tests
 
@@ -80,7 +83,15 @@ deno test --allow-read
 
 ## Style guide
 
-Uses Deno lint in VS Code
+Uses Deno lint in VS Code, and Deno FMT for automatic code formatting.
+
+## Forking
+
+This could easily be forked and setup for your own location! You could even swap out custard with some other updated information. Have fun with it!
+
+## Limitations
+
+Some sites (*cough* Bubba's *cough*) use hosting that block Bots like Puppeteer, so they cannot be scraped consistently.
 
 ## Licensing
 
