@@ -53,6 +53,12 @@
             "url" : "https://www.kraverzcustard.com/FlavorSchedule", 
             "script": "./sites/kraverz.ts", 
             "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Hefner's Frozen Custard", 
+            "url" : "https://www.hefnerscustard.com/", 
+            "script": "./sites/hefners.ts", 
+            "flavorOfTheDay": "" 
         }
     ]
 }
