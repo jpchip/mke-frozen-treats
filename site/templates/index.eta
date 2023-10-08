@@ -19,6 +19,13 @@
       .nav-pills .nav-link.active {
         background-color: #a8b89e;
       }
+      .list-group-item-action:focus, 
+      .list-group-item-action:hover {
+        background-color: #f6f8f5;
+      }
+      .text-bg-light {
+        background-color: #f6f8f5 !important;
+      }
     </style>
   </head>
   <body class="d-flex flex-column h-100">
@@ -66,14 +73,14 @@
                               <h5 class="mb-1" x-text="site.name"></h5>
                               <p x-text="site.flavorOfTheDay"></p>
                             </div>
-                            <span class="badge bg-danger rounded-pill" title="Add to Favorites" x-on:click="
+                            <span class="badge text-bg-light rounded-pill" title="Add to Favorites" x-on:click="
                             $event.preventDefault();
                             $event.stopPropagation();
                             site.isFavorite = !site.isFavorite;
                             const favs = sites.filter(s => s.isFavorite);
                             favorites = favs;
                             localStorage.setItem('mkeftfavs', JSON.stringify(favs.map(f => f.name)));">
-                              <i class="bi" :class="site.isFavorite ? 'bi-heart-fill' : 'bi-heart'"></i>
+                              <i class="bi" :class="site.isFavorite ? 'bi-heart-fill text-danger' : 'bi-heart'"></i>
                             </span>
                         </a>                   
                     </template>
