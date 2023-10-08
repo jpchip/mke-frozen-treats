@@ -4,7 +4,7 @@ Please see the Code of Conduct before submitting a PR.
 
 ### Am I missing a place?
 
-Feel free to add any new sites and submit me a PR?
+Feel free to add any new sites and submit me a PR.
 
 ### Bug or missing feature?
 
