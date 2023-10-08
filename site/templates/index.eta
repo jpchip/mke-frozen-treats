@@ -14,23 +14,89 @@
     <script src="index.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script async src="https://analytics.umami.is/script.js" data-website-id="8dac5b06-6a7c-45b9-bb35-c197e3b55e5c"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+      .nav-pills .nav-link.active {
+        background-color: #a8b89e;
+      }
+    </style>
   </head>
   <body class="d-flex flex-column h-100">
     <div class="container flex-fill">
-        <div x-data="{sites: [{name: 'Loading...'}], lastUpdatedOn: ''}" x-init="axios.get('<%= it.FLAVORS_OF_THE_DAY_URL %>?v=' + new Date().toISOString().split('T')[0], {headers: {
+        <div x-data="{sites: [{name: 'Fetching Flavors...'}], favorites: [], lastUpdatedOn: ''}" x-init="axios.get('<%= it.FLAVORS_OF_THE_DAY_URL %>?v=' + new Date().toISOString().split('T')[0], {headers: {
           'Cache-Control': 'max-age=3600'
         }}).then(r => {
             sites = r.data.sites.sort((a, b) => a.name.localeCompare(b.name));
+            const mkeftfavs = localStorage.getItem('mkeftfavs');
+            if (mkeftfavs) {
+              const favoriteNames = JSON.parse(mkeftfavs);
+              if (Array.isArray(favoriteNames)) {
+                favoriteNames.forEach(fn => {
+                  const site = sites.find(s => s.name === fn);
+                  if (site) {
+                    site.isFavorite = true;
+                  }
+                });
+                favorites = sites.filter(s => s.isFavorite);
+              }
+            }
+
+            if (favorites.length > 0) {
+              const favTab = document.getElementById('favorites-tab').click();
+            } else {
+              const homeTab = document.getElementById('home-tab').click();
+            }
+
             lastUpdatedOn = new Date(r.data.lastUpdatedOn).toLocaleString();
         });">
-            <div class="list-group list-group-flush">
-                <template x-for="site in sites">
-                    <a class="list-group-item list-group-item-action" x-bind:href="site.url">
-                        <h5 class="mb-1" x-text="site.name"></h5>
-                        <p x-text="site.flavorOfTheDay"></p>
-                    </a>                   
-                </template>
+            <ul class="nav nav-pills nav-fill mt-1" id="myTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="false">All</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="favorites-tab" data-bs-toggle="tab" data-bs-target="#favorites-tab-pane" type="button" role="tab" aria-controls="favorites-tab-pane" aria-selected="false">Favorites</button>
+              </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                  <div class="list-group list-group-flush">
+                    <template x-for="site in sites">
+                        <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" x-bind:href="site.url">
+                            <div >
+                              <h5 class="mb-1" x-text="site.name"></h5>
+                              <p x-text="site.flavorOfTheDay"></p>
+                            </div>
+                            <span class="badge bg-danger rounded-pill" title="Add to Favorites" x-on:click="
+                            $event.preventDefault();
+                            $event.stopPropagation();
+                            site.isFavorite = !site.isFavorite;
+                            const favs = sites.filter(s => s.isFavorite);
+                            favorites = favs;
+                            localStorage.setItem('mkeftfavs', JSON.stringify(favs.map(f => f.name)));">
+                              <i class="bi" :class="site.isFavorite ? 'bi-heart-fill' : 'bi-heart'"></i>
+                            </span>
+                        </a>                   
+                    </template>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="favorites-tab-pane" role="tabpanel" aria-labelledby="favorites-tab" tabindex="1">
+                
+                <div class="list-group list-group-flush">
+                    <template x-if="favorites.length === 0" >
+                      <p class="text-center my-5">You haven't selected any favorites yet.</p>
+                    </template>
+                    <template x-for="site in favorites">
+                        <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" x-bind:href="site.url">
+                            <div>
+                              <h5 class="mb-1" x-text="site.name"></h5>
+                              <p x-text="site.flavorOfTheDay"></p>
+                            </div>
+                        </a>                   
+                    </template>
+                </div>
+              </div>
             </div>
+            
             <p class="small">Last updated: <span x-text="lastUpdatedOn"></span></p>
         </div>
         
@@ -44,5 +110,6 @@
         </div>
       </div>
     </nav>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
   </body>
 </html>
