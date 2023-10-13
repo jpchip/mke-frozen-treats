@@ -59,6 +59,42 @@
             "url" : "https://www.hefnerscustard.com/", 
             "script": "./sites/hefners.ts", 
             "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Culver's: Shorewood", 
+            "url" : "https://www.culvers.com/restaurants/shorewood", 
+            "script": "./sites/culvers-brookfield.ts", 
+            "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Culver's: Mequon", 
+            "url" : "https://www.culvers.com/restaurants/mequon", 
+            "script": "./sites/culvers-brookfield.ts", 
+            "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Culver's: Glendale - Bayside Dr", 
+            "url" : "https://www.culvers.com/restaurants/glendale-wi-bayside-dr", 
+            "script": "./sites/culvers-brookfield.ts", 
+            "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Culver's: Milwaukee - W Layton Ave", 
+            "url" : "https://www.culvers.com/restaurants/milwaukee-layton", 
+            "script": "./sites/culvers-brookfield.ts", 
+            "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Culver's: West Milwaukee - Miller Pkwy", 
+            "url" : "https://www.culvers.com/restaurants/west-milwaukee", 
+            "script": "./sites/culvers-brookfield.ts", 
+            "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Culver's: West Allis - S 108th St", 
+            "url" : "https://www.culvers.com/restaurants/west-milwaukee", 
+            "script": "./sites/culvers-brookfield.ts", 
+            "flavorOfTheDay": "" 
         }
     ]
 }

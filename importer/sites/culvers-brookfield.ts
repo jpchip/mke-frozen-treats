@@ -3,7 +3,7 @@ import { Browser } from "https://deno.land/x/puppeteer@16.2.0/vendor/puppeteer-c
 import { MkeFrozenTreatsImporter } from "../importer.interface.ts";
 
 export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site): Promise<string> {
-    console.log('Loading Culvers Brookfield...');
+    console.log(`Loading ${site.name}`);
     const page = await browser.newPage();
     page.emulateTimezone('America/Chicago');
 
