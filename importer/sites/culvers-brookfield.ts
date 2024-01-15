@@ -9,7 +9,7 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
 
     await page.goto(site.url);
 
-    const flavorEl = await page.waitForSelector(`.RestaurantDetails_containerRestaurantFlavorContentHeading__XTuhn`, { timeout: 2000 });
+    const flavorEl = await page.waitForSelector(`.RestaurantDetails_containerRestaurantFlavorContentHeading__sLzcV`, { timeout: 2000 });
     
     const flavorOfTheDay = await page.evaluate(
         // deno-lint-ignore no-explicit-any
