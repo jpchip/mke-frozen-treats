@@ -87,7 +87,7 @@ Uses Deno lint in VS Code, and Deno FMT for automatic code formatting.
 
 ## Forking
 
-This could easily be forked and setup for your own location! You could even swap out custard with some other thing (eg. soup, taco, sale). Have fun with it!
+This could easily be forked and setup for your own locations! You could even swap out custard with some other thing (eg. soup, tacos, sales). Have fun with it!
 
 ## Limitations
 
