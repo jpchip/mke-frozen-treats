@@ -64,7 +64,7 @@
                 <button class="nav-link" id="favorites-tab" data-bs-toggle="tab" data-bs-target="#favorites-tab-pane" type="button" role="tab" aria-controls="favorites-tab-pane" aria-selected="false">Favorites</button>
               </li>
             </ul>
-            <div class="tab-content" id="myTabContent">
+            <div class="tab-content border-bottom" id="myTabContent">
               <div class="tab-pane fade" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
                   <div class="list-group list-group-flush">
                     <template x-for="site in sites">
@@ -104,7 +104,7 @@
               </div>
             </div>
             
-            <p class="small">Last updated: <span x-text="lastUpdatedOn"></span></p>
+            <p class="small mt-2">Last updated: <span x-text="lastUpdatedOn"></span><br/><a href="https://ko-fi.com/jpchip" target="_blank">Donate</a> | <a href="https://github.com/jpchip/mke-frozen-treats/issues" target="_blank">Feedback</a></p>
         </div>
         
     </div>
