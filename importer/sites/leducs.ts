@@ -7,8 +7,9 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
     const page = await browser.newPage();
     page.emulateTimezone('America/Chicago');
     await page.goto(site.url);
-
+    await page.waitForTimeout(1000);
     await page.click('.fc-basicDay-button');
+
     const flavorTd = await page.waitForSelector(`.fc-content`);
     
     const flavorOfTheDay = await page.evaluate(
