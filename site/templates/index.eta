@@ -110,7 +110,9 @@
     </div>
     <nav class="navbar sticky-bottom navbar-expand-sm" style="background-color: #F6D9BE;">
       <div class="container-fluid">
-          <a class="navbar-brand" href="#">MKE Frozen Treats</a>
+          <a class="navbar-brand" href="#">
+          <img src="images/logo192.png" alt="Bootstrap" width="42" height="42">
+          MKE Frozen Treats</a>
           <span class="navbar-text">
             Frozen Custard Flavors of the Day
           </span>
