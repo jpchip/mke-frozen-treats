@@ -61,6 +61,12 @@
             "flavorOfTheDay": "" 
         },
         { 
+            "name": "Culver's: Elm Grove - W Bluemound Rd", 
+            "url" : "https://www.culvers.com/restaurants/elm-grove-wi", 
+            "script": "./sites/culvers-brookfield.ts", 
+            "flavorOfTheDay": "" 
+        },
+        { 
             "name": "Culver's: Shorewood", 
             "url" : "https://www.culvers.com/restaurants/shorewood", 
             "script": "./sites/culvers-brookfield.ts", 
