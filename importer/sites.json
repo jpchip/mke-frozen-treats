@@ -107,6 +107,12 @@
             "url" : "https://www.popscustard.com/", 
             "script": "./sites/pops.ts", 
             "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Georgie Porgies", 
+            "url" : "https://georgieporgies.com/georgies-flavor-forecast/", 
+            "script": "./sites/georgie.ts", 
+            "flavorOfTheDay": "" 
         }
     ]
 }
