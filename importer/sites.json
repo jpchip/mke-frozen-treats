@@ -101,6 +101,12 @@
             "url" : "https://www.culvers.com/restaurants/west-milwaukee", 
             "script": "./sites/culvers-brookfield.ts", 
             "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Pop's Custard", 
+            "url" : "https://www.popscustard.com/", 
+            "script": "./sites/pops.ts", 
+            "flavorOfTheDay": "" 
         }
     ]
 }
