@@ -113,6 +113,12 @@
             "url" : "https://georgieporgies.com/georgies-flavor-forecast/", 
             "script": "./sites/georgie.ts", 
             "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Golden Gyro", 
+            "url" : "https://goldengyro.com/daily-flavors", 
+            "script": "./sites/goldengyro.ts", 
+            "flavorOfTheDay": "" 
         }
     ]
 }
