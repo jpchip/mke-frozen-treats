@@ -119,6 +119,12 @@
             "url" : "https://goldengyro.com/daily-flavors", 
             "script": "./sites/goldengyro.ts", 
             "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Culver's: Waukesha, WI - E Main St", 
+            "url" : "https://culvers.com/restaurants/waukesha-hwy-164", 
+            "script": "./sites/culvers-brookfield.ts", 
+            "flavorOfTheDay": "" 
         }
     ]
 }
