@@ -30,7 +30,7 @@
   </head>
   <body class="d-flex flex-column h-100">
     <div class="container flex-fill">
-        <div x-data="{sites: [{name: 'Fetching Flavors...'}], favorites: [], lastUpdatedOn: ''}" x-init="axios.get('<%= it.FLAVORS_OF_THE_DAY_URL %>?v=' + new Date().toISOString().split('T')[0], {headers: {
+        <div x-data="{sites: [{name: 'Fetching Flavors...'}], favorites: [], nearby: [], lastUpdatedOn: ''}" x-init="axios.get('<%= it.FLAVORS_OF_THE_DAY_URL %>?v=' + new Date().toISOString().split('T')[0], {headers: {
           'Cache-Control': 'max-age=3600'
         }}).then(r => {
             sites = r.data.sites.sort((a, b) => a.name.localeCompare(b.name));
@@ -55,13 +55,49 @@
             }
 
             lastUpdatedOn = new Date(r.data.lastUpdatedOn).toLocaleString();
-        });">
+        });
+
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(position => {
+            const { latitude, longitude } = position.coords;
+            nearby = sites.filter(site => {
+              return site.locations.some(location => {
+                const distance = getDistanceFromLatLonInKm(latitude, longitude, location.latitude, location.longitude);
+                return distance <= 8.04672; // 5 miles in km
+              });
+            });
+            if (nearby.length > 0) {
+              const nearbyTab = document.getElementById('nearby-tab').click();
+            }
+          });
+        }
+
+        function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+          const R = 6371; // Radius of the earth in km
+          const dLat = deg2rad(lat2 - lat1); 
+          const dLon = deg2rad(lon2 - lon1); 
+          const a = 
+            Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+            Math.sin(dLon/2) * Math.sin(dLon/2)
+            ; 
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+          const d = R * c; // Distance in km
+          return d;
+        }
+
+        function deg2rad(deg) {
+          return deg * (Math.PI/180)
+        }">
             <ul class="nav nav-pills nav-fill mt-1" id="myTab" role="tablist">
               <li class="nav-item" role="presentation">
                 <button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="false">All</button>
               </li>
               <li class="nav-item" role="presentation">
                 <button class="nav-link" id="favorites-tab" data-bs-toggle="tab" data-bs-target="#favorites-tab-pane" type="button" role="tab" aria-controls="favorites-tab-pane" aria-selected="false">Favorites</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="nearby-tab" data-bs-toggle="tab" data-bs-target="#nearby-tab-pane" type="button" role="tab" aria-controls="nearby-tab-pane" aria-selected="false">Nearby</button>
               </li>
             </ul>
             <div class="tab-content border-bottom" id="myTabContent">
@@ -102,6 +138,21 @@
                     </template>
                 </div>
               </div>
+              <div class="tab-pane fade" id="nearby-tab-pane" role="tabpanel" aria-labelledby="nearby-tab" tabindex="2">
+                <div class="list-group list-group-flush">
+                    <template x-if="nearby.length === 0" >
+                      <p class="text-center my-5">No nearby locations found.</p>
+                    </template>
+                    <template x-for="site in nearby">
+                        <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" x-bind:href="site.url">
+                            <div>
+                              <h5 class="mb-1" x-text="site.name"></h5>
+                              <p x-text="site.flavorOfTheDay"></p>
+                            </div>
+                        </a>                   
+                    </template>
+                </div>
+              </div>
             </div>
             
             <p class="small mt-2">Last updated: <span x-text="lastUpdatedOn"></span><br/><a href="https://ko-fi.com/jpchip" target="_blank">Donate</a> | <a href="https://github.com/jpchip/mke-frozen-treats/issues" target="_blank">Feedback</a></p>
@@ -119,6 +170,6 @@
         </div>
       </div>
     </nav>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
   </body>
 </html>

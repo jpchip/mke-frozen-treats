@@ -4,151 +4,301 @@
             "name": "Oscar's", 
             "url" : "https://www.oscarscustard.com/index.php/flavors/", 
             "script": "./sites/oscars.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Kopp's", 
             "url" : "https://kopps.com/flavor-preview", 
             "script": "./sites/kopps.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "LeDuc's", 
             "url" : "https://leducscustard.com/custard-calendar/", 
             "script": "./sites/leducs.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Bubba's", 
             "url" : "https://www.bubbasfrozencustard.com/events", 
             "script": "./sites/bubbas.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Murf's", 
             "url" : "http://www.murfsfrozencustard.com/", 
             "script": "./sites/murfs.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Gille's", 
             "url" : "https://gillesfrozencustard.com/flavor-of-the-day", 
             "script": "./sites/gilles.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Culver's: Brookfield - W Capital Dr", 
             "url" : "https://www.culvers.com/restaurants/brookfield-capitol", 
             "script": "./sites/culvers-brookfield.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Robert's", 
             "url" : "https://robertsfrozencustard.com/", 
             "script": "./sites/roberts.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Kraverz's", 
             "url" : "https://www.kraverzcustard.com/FlavorSchedule", 
             "script": "./sites/kraverz.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Hefner's Frozen Custard", 
             "url" : "https://www.hefnerscustard.com/", 
             "script": "./sites/hefners.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Culver's: Elm Grove - W Bluemound Rd", 
             "url" : "https://www.culvers.com/restaurants/elm-grove-wi", 
             "script": "./sites/culvers-brookfield.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Culver's: Shorewood", 
             "url" : "https://www.culvers.com/restaurants/shorewood", 
             "script": "./sites/culvers-brookfield.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Culver's: Mequon", 
             "url" : "https://www.culvers.com/restaurants/mequon", 
             "script": "./sites/culvers-brookfield.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Culver's: Glendale - Bayside Dr", 
             "url" : "https://www.culvers.com/restaurants/glendale-wi-bayside-dr", 
             "script": "./sites/culvers-brookfield.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Culver's: Milwaukee - W Layton Ave", 
             "url" : "https://www.culvers.com/restaurants/milwaukee-layton", 
             "script": "./sites/culvers-brookfield.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Culver's: West Milwaukee - Miller Pkwy", 
             "url" : "https://www.culvers.com/restaurants/west-milwaukee", 
             "script": "./sites/culvers-brookfield.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Culver's: West Allis - S 108th St", 
             "url" : "https://www.culvers.com/restaurants/west-milwaukee", 
             "script": "./sites/culvers-brookfield.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Pop's Custard", 
             "url" : "https://www.popscustard.com/", 
             "script": "./sites/pops.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Georgie Porgies", 
             "url" : "https://georgieporgies.com/georgies-flavor-forecast/", 
             "script": "./sites/georgie.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Golden Gyro", 
             "url" : "https://goldengyro.com/daily-flavors", 
             "script": "./sites/goldengyro.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Culver's: Waukesha, WI - E Main St", 
             "url" : "https://culvers.com/restaurants/waukesha-hwy-164", 
             "script": "./sites/culvers-brookfield.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Culver's: Waukesha, WI - Grandview", 
             "url" : "https://www.culvers.com/restaurants/waukesha-grandview", 
             "script": "./sites/culvers-brookfield.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Culver's: Brookfield - 124th St", 
             "url" : "https://www.culvers.com/restaurants/brookfield-124th", 
             "script": "./sites/culvers-brookfield.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Culver's: New Berlin - W National Ave", 
             "url" : "https://www.culvers.com/restaurants/new-berlin", 
             "script": "./sites/culvers-brookfield.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         },
         { 
             "name": "Culver's: Milwaukee - Fond Du Lac Ave", 
             "url" : "https://www.culvers.com/restaurants/milwaukee-fond-du-lac", 
             "script": "./sites/culvers-brookfield.ts", 
-            "flavorOfTheDay": "" 
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0389,
+                    "longitude": -87.9065
+                }
+            ]
         }
     ]
 }
