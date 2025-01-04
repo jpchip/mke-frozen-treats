@@ -125,6 +125,30 @@
             "url" : "https://culvers.com/restaurants/waukesha-hwy-164", 
             "script": "./sites/culvers-brookfield.ts", 
             "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Culver's: Waukesha, WI - Grandview", 
+            "url" : "https://www.culvers.com/restaurants/waukesha-grandview", 
+            "script": "./sites/culvers-brookfield.ts", 
+            "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Culver's: Brookfield - 124th St", 
+            "url" : "https://www.culvers.com/restaurants/brookfield-124th", 
+            "script": "./sites/culvers-brookfield.ts", 
+            "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Culver's: New Berlin - W National Ave", 
+            "url" : "https://www.culvers.com/restaurants/new-berlin", 
+            "script": "./sites/culvers-brookfield.ts", 
+            "flavorOfTheDay": "" 
+        },
+        { 
+            "name": "Culver's: Milwaukee - Fond Du Lac Ave", 
+            "url" : "https://www.culvers.com/restaurants/milwaukee-fond-du-lac", 
+            "script": "./sites/culvers-brookfield.ts", 
+            "flavorOfTheDay": "" 
         }
     ]
 }
