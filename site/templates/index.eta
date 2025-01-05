@@ -54,23 +54,25 @@
               const homeTab = document.getElementById('home-tab').click();
             }
 
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(position => {
+                const { latitude, longitude } = position.coords;
+                nearby = sites.filter(site => {
+                  if (site.locations && site.locations.length > 0) {
+                    return site.locations.some(location => {
+                    const distance = getDistanceFromLatLonInKm(latitude, longitude, location.latitude, location.longitude);
+                      return distance <= 8.04672; // 5 miles in km
+                    });
+                  }
+                  return false;
+                });
+              });
+            }
+
             lastUpdatedOn = new Date(r.data.lastUpdatedOn).toLocaleString();
         });
 
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(position => {
-            const { latitude, longitude } = position.coords;
-            nearby = sites.filter(site => {
-              return site.locations.some(location => {
-                const distance = getDistanceFromLatLonInKm(latitude, longitude, location.latitude, location.longitude);
-                return distance <= 8.04672; // 5 miles in km
-              });
-            });
-            if (nearby.length > 0) {
-              const nearbyTab = document.getElementById('nearby-tab').click();
-            }
-          });
-        }
+        
 
         function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
           const R = 6371; // Radius of the earth in km
