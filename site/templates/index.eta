@@ -60,12 +60,17 @@
                 nearby = sites.filter(site => {
                   if (site.locations && site.locations.length > 0) {
                     return site.locations.some(location => {
-                    const distance = getDistanceFromLatLonInKm(latitude, longitude, location.latitude, location.longitude);
-                      return distance <= 8.04672; // 5 miles in km
+                      const distance = getDistanceFromLatLonInKm(latitude, longitude, location.latitude, location.longitude);
+                      if(distance <= 8.04672) { // 5 miles in km
+                        site.distance = distance;
+                        return true;
+                      }
+                      return false;
                     });
                   }
                   return false;
                 });
+                nearby.sort((a, b) => a.distance - b.distance);
               });
             }
 
