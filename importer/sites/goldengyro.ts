@@ -16,18 +16,22 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
     //get today's date
     const today = time().tz('America/Chicago').t;
     const month = today.toLocaleString('en-US', {month: 'long'});
-    const date = `${month} ${today.getDate()}`; 
+    
+    // Function to add ordinal suffix to day number
+    function getOrdinalSuffix(day: number): string {
+        if (day > 3 && day < 21) return `${day}th`; // 4th through 20th
+        switch (day % 10) {
+            case 1: return `${day}st`;
+            case 2: return `${day}nd`;
+            case 3: return `${day}rd`;
+            default: return `${day}th`;
+        }
+    }
+    
+    const dayWithSuffix = getOrdinalSuffix(today.getDate());
+    const date = `${month.toUpperCase()}${dayWithSuffix.toUpperCase()}`; 
 
-
-    const h3El = await page.waitForXPath(`//h3[contains(text(), "${date}")]`, { timeout: 2000 });
-
-
-    const todayDivEl = await page.evaluateHandle(element => 
-        element.closest('[data-ux="Block"]'), h3El
-    );
-
-
-    const flavorEl = await todayDivEl.waitForSelector(`h4`);
+    const flavorEl = await page.waitForSelector(`[data-aid="MENU_CATEGORY_${date}"] [data-ux="HeadingMinor"]`, { timeout: 2000 });
     const flavorOfTheDay = await page.evaluate(
         // deno-lint-ignore no-explicit-any
         (flavorEl: any) => flavorEl.textContent,
