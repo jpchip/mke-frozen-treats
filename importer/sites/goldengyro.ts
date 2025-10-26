@@ -29,9 +29,19 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
     }
     
     const dayWithSuffix = getOrdinalSuffix(today.getDate());
-    const date = `${month.toUpperCase()}${dayWithSuffix.toUpperCase()}`; 
-
-    const flavorEl = await page.waitForSelector(`[data-aid="MENU_CATEGORY_${date}"] [data-ux="HeadingMinor"]`, { timeout: 2000 });
+    const date = `${month.toUpperCase()}${dayWithSuffix.toUpperCase()}`;
+    
+    // Try with full ordinal suffix first, then fall back to just "T"
+    let flavorEl;
+    try {
+        flavorEl = await page.waitForSelector(`[data-aid="MENU_CATEGORY_${date}"] [data-ux="HeadingMinor"]`, { timeout: 2000 });
+    } catch (e) {
+        // If the full suffix doesn't work, try with just the day + "T"
+        const dayNumber = today.getDate();
+        const dateWithT = `${month.toUpperCase()}${dayNumber}T`;
+        flavorEl = await page.waitForSelector(`[data-aid="MENU_CATEGORY_${dateWithT}"] [data-ux="HeadingMinor"]`, { timeout: 2000 });
+    }
+    
     const flavorOfTheDay = await page.evaluate(
         // deno-lint-ignore no-explicit-any
         (flavorEl: any) => flavorEl.textContent,

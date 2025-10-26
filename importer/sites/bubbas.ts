@@ -7,11 +7,25 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
     const page = await browser.newPage();
     page.emulateTimezone('America/Chicago');
 
-    //even with this user agent in place, sometimes this will fail because of Cloudflare
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 5.1; rv:5.0) Gecko/20100101 Firefox/5.0');
-    await page.goto(site.url);
+    // Set realistic viewport
+    await page.setViewport({ width: 1920, height: 1080 });
+    
+    // Set modern user agent
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+    
+    // Set extra headers
+    await page.setExtraHTTPHeaders({
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Encoding': 'gzip, deflate, br',
+    });
+    
+    await page.goto(site.url, { waitUntil: 'networkidle2' });
 
-    const flavorEl = await page.waitForSelector(`.fc-event-today .fc-event-title`, { timeout: 2000 });
+    // Add a small delay to appear more human
+    await page.waitForTimeout(1000);
+
+    const flavorEl = await page.waitForSelector(`.fc-event-today .fc-event-title`, { timeout: 5000 });
     
     const flavorOfTheDay = await page.evaluate(
         // deno-lint-ignore no-explicit-any

@@ -97,7 +97,7 @@
         },
         { 
             "name": "Robert's", 
-            "url": "https://robertsfrozencustard.com/", 
+            "url": "https://robertsfrozencustard.com/flavor.html", 
             "script": "./sites/roberts.ts", 
             "flavorOfTheDay": "",
             "locations": [
@@ -212,18 +212,6 @@
                 {
                     "latitude": 43.011852,
                     "longitude": -88.0458024
-                }
-            ]
-        },
-        { 
-            "name": "Pop's Custard", 
-            "url": "https://www.popscustard.com/", 
-            "script": "./sites/pops.ts", 
-            "flavorOfTheDay": "",
-            "locations": [
-                {
-                    "latitude": 43.1755506,
-                    "longitude": -88.1142974
                 }
             ]
         },
