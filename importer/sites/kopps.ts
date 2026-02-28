@@ -16,5 +16,6 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
       });
     //console.log(flavorsOfTheDay);
 
+    await page.close();
     return flavorsOfTheDay.join(',');
 }

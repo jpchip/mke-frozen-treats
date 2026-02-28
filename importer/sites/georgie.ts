@@ -18,6 +18,7 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
     const flavorOfTheDay = await todayDivEl.$$eval('img', options => {
         return options.map(option => option.getAttribute('alt'));
       });
+    await page.close();
     if(flavorOfTheDay.length > 0) {
         const flavorOfTheDayText = flavorOfTheDay[0].replace('Flavor of the Day - ', '');
         return flavorOfTheDayText;

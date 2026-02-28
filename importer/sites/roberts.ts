@@ -42,5 +42,6 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
         return textNode?.textContent?.trim() || todayLi.textContent?.split('\n')[0].trim();
     });
 
+    await page.close();
     return flavorOfTheDay || "Flavor not found";
 }

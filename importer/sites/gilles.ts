@@ -13,6 +13,7 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
     const flavorsOfTheDay = await flavorTd.$$eval('.field-content a', options => {
         return options.map(option => option.innerText);
     });
+    await page.close();
     if (flavorsOfTheDay.length > 0) {
         return flavorsOfTheDay.filter((v) => v !== '').join(',');
     }
