@@ -30,7 +30,7 @@
   </head>
   <body class="d-flex flex-column h-100">
     <div class="container flex-fill">
-        <div x-data="{sites: [{name: 'Fetching Flavors...'}], favorites: [], nearby: [], lastUpdatedOn: ''}" x-init="axios.get('<%= it.FLAVORS_OF_THE_DAY_URL %>?v=' + new Date().toISOString().split('T')[0], {headers: {
+        <div x-data="{sites: [{name: 'Fetching Flavors...'}], favorites: [], nearby: [], nearbySearchComplete: false, lastUpdatedOn: '', search: '', hideCulvers: false, get filteredSites() { return this.sites.filter(s => { if (this.hideCulvers && s.name.startsWith('Culver\'s')) return false; if (this.search && !s.name.toLowerCase().includes(this.search.toLowerCase()) && !(s.flavorOfTheDay && s.flavorOfTheDay.toLowerCase().includes(this.search.toLowerCase()))) return false; return true; }); }}" x-init="axios.get('<%= it.FLAVORS_OF_THE_DAY_URL %>?v=' + new Date().toISOString().split('T')[0], {headers: {
           'Cache-Control': 'max-age=3600'
         }}).then(r => {
             sites = r.data.sites.sort((a, b) => a.name.localeCompare(b.name));
@@ -71,7 +71,10 @@
                   return false;
                 });
                 nearby.sort((a, b) => a.distance - b.distance);
-              });
+                nearbySearchComplete = true;
+              }, () => { nearbySearchComplete = true; });
+            } else {
+              nearbySearchComplete = true;
             }
 
             lastUpdatedOn = new Date(r.data.lastUpdatedOn).toLocaleString();
@@ -109,8 +112,15 @@
             </ul>
             <div class="tab-content border-bottom" id="myTabContent">
               <div class="tab-pane fade" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                  <div class="d-flex align-items-center gap-2 p-2">
+                    <input type="search" class="form-control form-control-sm" placeholder="Search..." x-model="search">
+                    <div class="form-check form-switch text-nowrap">
+                      <input class="form-check-input" type="checkbox" id="hideCulvers" x-model="hideCulvers">
+                      <label class="form-check-label small" for="hideCulvers">Hide Culver's</label>
+                    </div>
+                  </div>
                   <div class="list-group list-group-flush">
-                    <template x-for="site in sites">
+                    <template x-for="site in filteredSites">
                         <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" x-bind:href="site.url">
                             <div >
                               <h5 class="mb-1" x-text="site.name"></h5>
@@ -147,7 +157,10 @@
               </div>
               <div class="tab-pane fade" id="nearby-tab-pane" role="tabpanel" aria-labelledby="nearby-tab" tabindex="2">
                 <div class="list-group list-group-flush">
-                    <template x-if="nearby.length === 0" >
+                    <template x-if="!nearbySearchComplete" >
+                      <p class="text-center my-5">Searching for nearby locations...</p>
+                    </template>
+                    <template x-if="nearbySearchComplete && nearby.length === 0" >
                       <p class="text-center my-5">No nearby locations found.</p>
                     </template>
                     <template x-for="site in nearby">
