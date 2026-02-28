@@ -298,6 +298,486 @@
                     "longitude": -87.9827186
                 }
             ]
+        },
+        {
+            "name": "Culver's: Greenfield - W Layton Ave",
+            "url": "https://www.culvers.com/restaurants/greenfield-wi-layton-ave",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.958984375,
+                    "longitude": -87.9899673461914
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Milwaukee - W Good Hope Rd",
+            "url": "https://www.culvers.com/restaurants/milwaukee-good-hope",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.148231506347656,
+                    "longitude": -88.00408172607422
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Oak Creek - S Howell Ave",
+            "url": "https://www.culvers.com/restaurants/oak-creek",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.901634216308594,
+                    "longitude": -87.9126205444336
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Hales Corners - S 108th St",
+            "url": "https://www.culvers.com/restaurants/hales-corners",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.93419647216797,
+                    "longitude": -88.04946899414062
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Brown Deer - W Schroeder Dr",
+            "url": "https://www.culvers.com/restaurants/brown-deer",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.18611145019531,
+                    "longitude": -87.96513366699219
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Franklin - W Oakwood Park Ct",
+            "url": "https://www.culvers.com/restaurants/franklin",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.87202072143555,
+                    "longitude": -87.97013854980469
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Muskego - Racine Ave",
+            "url": "https://www.culvers.com/restaurants/muskego",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.90005874633789,
+                    "longitude": -88.14868927001953
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Menomonee Falls - Bancroft Dr",
+            "url": "https://www.culvers.com/restaurants/menomonee-falls",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.191654205322266,
+                    "longitude": -88.14076232910156
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Waukesha - W Sunset Dr",
+            "url": "https://www.culvers.com/restaurants/waukesha-sunset",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.988609313964844,
+                    "longitude": -88.24684143066406
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Sussex - Hwy 164",
+            "url": "https://www.culvers.com/restaurants/sussex",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.1379508972168,
+                    "longitude": -88.24332427978516
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Grafton - Wisconsin Ave",
+            "url": "https://www.culvers.com/restaurants/grafton",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.30497360229492,
+                    "longitude": -87.96100616455078
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Racine - Douglas Ave",
+            "url": "https://www.culvers.com/restaurants/racine-wi-douglas-ave",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.77839660644531,
+                    "longitude": -87.80684661865234
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Racine - S Sylvania Ave",
+            "url": "https://www.culvers.com/restaurants/racine-sylvania",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.72585678100586,
+                    "longitude": -87.95706176757812
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Hartland - Industrial Ct",
+            "url": "https://www.culvers.com/restaurants/hartland-wi",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.09284973144531,
+                    "longitude": -88.36058044433594
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Racine - 21st St",
+            "url": "https://www.culvers.com/restaurants/racine-21st",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.70475769042969,
+                    "longitude": -87.84991455078125
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Wales - E Summit Ave",
+            "url": "https://www.culvers.com/restaurants/wales",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0152702331543,
+                    "longitude": -88.37399291992188
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Port Washington - W Grand Ave",
+            "url": "https://www.culvers.com/restaurants/port-washington",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.38614273071289,
+                    "longitude": -87.89720153808594
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Jackson - Tillie Lake Ct",
+            "url": "https://www.culvers.com/restaurants/jackson-wi",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.32551956176758,
+                    "longitude": -88.18882751464844
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Mukwonago - N Rochester St",
+            "url": "https://www.culvers.com/restaurants/mukwonago",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.878631591796875,
+                    "longitude": -88.33944702148438
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Oconomowoc - Summit Ave",
+            "url": "https://www.culvers.com/restaurants/oconomowoc",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.092891693115234,
+                    "longitude": -88.47896575927734
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Kenosha - Burlington Rd",
+            "url": "https://www.culvers.com/restaurants/burlington-rd-kenosha-wi",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.61349868774414,
+                    "longitude": -87.95010375976562
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Hartford - E Sumner St",
+            "url": "https://www.culvers.com/restaurants/hartford",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.317264556884766,
+                    "longitude": -88.35797119140625
+                }
+            ]
+        },
+        {
+            "name": "Culver's: East Troy - North St",
+            "url": "https://www.culvers.com/restaurants/east-troy-wi-north-st",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.791622161865234,
+                    "longitude": -88.39273834228516
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Burlington - Milwaukee Ave",
+            "url": "https://www.culvers.com/restaurants/burlington",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.69217300415039,
+                    "longitude": -88.266357421875
+                }
+            ]
+        },
+        {
+            "name": "Culver's: West Bend - W Washington St",
+            "url": "https://www.culvers.com/restaurants/west-bend",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.42807388305664,
+                    "longitude": -88.21224975585938
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Kenosha - Green Bay Rd",
+            "url": "https://www.culvers.com/restaurants/kenosha",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.5883674621582,
+                    "longitude": -87.8829574584961
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Kenosha - Sheridan Rd",
+            "url": "https://www.culvers.com/restaurants/kenosha-sheridan",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.55632781982422,
+                    "longitude": -87.8258056640625
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Paddock Lake - Antioch Rd",
+            "url": "https://www.culvers.com/restaurants/paddock-lake-wi-antioch-rd",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.56718063354492,
+                    "longitude": -88.11666107177734
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Pleasant Prairie - Corporate Dr",
+            "url": "https://www.culvers.com/restaurants/pleasant-prairie",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.5231819152832,
+                    "longitude": -87.94591522216797
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Elkhorn - N Wisconsin St",
+            "url": "https://www.culvers.com/restaurants/elkhorn",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.693206787109375,
+                    "longitude": -88.54239654541016
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Lake Geneva - N Wells St",
+            "url": "https://www.culvers.com/restaurants/lake-geneva",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.59033966064453,
+                    "longitude": -88.42876434326172
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Oostburg - S Business Park Dr",
+            "url": "https://www.culvers.com/restaurants/oostburg-wi-s-business-park-dr",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.622493743896484,
+                    "longitude": -87.77613830566406
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Watertown - S Church St",
+            "url": "https://www.culvers.com/restaurants/watertown",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.17193603515625,
+                    "longitude": -88.7329330444336
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Johnson Creek - Village Walk Ln",
+            "url": "https://www.culvers.com/restaurants/johnson-creek",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.0832633972168,
+                    "longitude": -88.76392364501953
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Whitewater - W Main St",
+            "url": "https://www.culvers.com/restaurants/whitewater",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.83528137207031,
+                    "longitude": -88.7605209350586
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Delavan - E Geneva St",
+            "url": "https://www.culvers.com/restaurants/delavan",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.62852478027344,
+                    "longitude": -88.61022186279297
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Sheboygan - Washington Ave",
+            "url": "https://www.culvers.com/restaurants/sheboygan-wi-washington",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.719879150390625,
+                    "longitude": -87.7396011352539
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Fort Atkinson - Madison Ave",
+            "url": "https://www.culvers.com/restaurants/fort-atkinson",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 42.940696716308594,
+                    "longitude": -88.86106872558594
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Plymouth - Eastern Ave",
+            "url": "https://www.culvers.com/restaurants/plymouth",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.74773025512695,
+                    "longitude": -87.95317077636719
+                }
+            ]
+        },
+        {
+            "name": "Culver's: Sheboygan - S Taylor Dr",
+            "url": "https://www.culvers.com/restaurants/sheboygan-taylor-drive",
+            "script": "./sites/culvers-brookfield.ts",
+            "flavorOfTheDay": "",
+            "locations": [
+                {
+                    "latitude": 43.74936294555664,
+                    "longitude": -87.7455825805664
+                }
+            ]
         }
     ]
 }
