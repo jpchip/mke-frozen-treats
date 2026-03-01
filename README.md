@@ -95,7 +95,7 @@ This could easily be forked and setup for your own locations! You could even swa
 
 Some sites (*cough* Bubba's *cough*) use hosting that block Bots like Puppeteer, so they cannot be scraped consistently. 
 
-Other places only list their flavors of the day on their facebook page and use inconsistent formatting that can't be scrapped. 
+Other places only list their flavors of the day on their facebook page (or not at all!) and use inconsistent formatting that can't be scrapped. 
 
 ## Licensing
 
