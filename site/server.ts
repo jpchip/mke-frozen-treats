@@ -7,7 +7,8 @@ if (FLAVORS_OF_THE_DAY_URL === undefined) {
   throw new TypeError("Missing FLAVORS_OF_THE_DAY_URL environment variable.");
 }
 
-Deno.serve({port: 8080}, (req: Request) => {
+const port = parseInt(Deno.env.get("PORT") ?? "8080");
+Deno.serve({port}, (req: Request) => {
     const pathname = new URL(req.url).pathname;
 
     if (pathname === "/favicon.ico") {
