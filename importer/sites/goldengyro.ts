@@ -1,6 +1,4 @@
-/// <reference types="https://deno.land/x/puppeteer@16.2.0/vendor/puppeteer-core/puppeteer/common/Browser.d.ts" />
-import { Browser } from "https://deno.land/x/puppeteer@16.2.0/vendor/puppeteer-core/puppeteer/common/Browser.js";
-import { time } from "https://denopkg.com/burhanahmeed/time.ts@v2.0.1/mod.ts";
+import type { Browser } from "npm:puppeteer";
 import { MkeFrozenTreatsImporter } from "../importer.interface.ts";
 
 export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site): Promise<string> {
@@ -11,10 +9,10 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
     //even with this user agent in place, sometimes this will fail because of Cloudflare
     await page.setUserAgent('Mozilla/5.0 (Windows NT 5.1; rv:5.0) Gecko/20100101 Firefox/5.0');
     await page.goto(site.url);
-    await page.waitForTimeout(1000);
+    await new Promise(r => setTimeout(r, 1000));
 
     //get today's date
-    const today = time().tz('America/Chicago').t;
+    const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
     const month = today.toLocaleString('en-US', {month: 'long'});
     
     // Function to add ordinal suffix to day number

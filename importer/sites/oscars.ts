@@ -1,6 +1,4 @@
-/// <reference types="https://deno.land/x/puppeteer@16.2.0/vendor/puppeteer-core/puppeteer/common/Browser.d.ts" />
-import { Browser } from "https://deno.land/x/puppeteer@16.2.0/vendor/puppeteer-core/puppeteer/common/Browser.js";
-import { time } from "https://denopkg.com/burhanahmeed/time.ts@v2.0.1/mod.ts";
+import type { Browser } from "npm:puppeteer";
 import { MkeFrozenTreatsImporter } from "../importer.interface.ts";
 
 export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site): Promise<string> {
@@ -10,16 +8,16 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
     await page.goto(site.url);
 
     //get today's date
-    const today = time().tz('America/Chicago').t;
+    const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
     const weekDay = today.toLocaleString('en-US', {weekday: 'short'});
     const date = `${weekDay} ${today.getDate()}`;
 
     let todayTd;
     try{ 
-        todayTd = await page.waitForXPath(`//td[contains(text(), "${date}")]`, { timeout: 2000 });
+        todayTd = await page.waitForSelector(`::-p-xpath(//td[contains(text(), "${date}")])`, { timeout: 2000 });
     }catch(_e) {
         if (weekDay === 'Thu') {
-            todayTd = await page.waitForXPath(`//td[contains(text(), "Thur ${today.getDate()}")]`, { timeout: 2000 });
+            todayTd = await page.waitForSelector(`::-p-xpath(//td[contains(text(), "Thur ${today.getDate()}")])`, { timeout: 2000 });
         }
     }
 

@@ -2,3 +2,4 @@
 importer/.env
 importer/test.json
 site/.env
+node_modules/

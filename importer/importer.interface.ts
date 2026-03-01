@@ -1,4 +1,4 @@
-import { Browser } from "https://deno.land/x/puppeteer@16.2.0/vendor/puppeteer-core/puppeteer/common/Browser.js";
+import type { Browser } from "npm:puppeteer";
 
 export declare namespace MkeFrozenTreatsImporter {
     interface Site {

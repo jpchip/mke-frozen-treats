@@ -1,6 +1,6 @@
-import puppeteer from "https://deno.land/x/puppeteer@16.2.0/mod.ts";
-import { parse } from "https://deno.land/std@0.194.0/flags/mod.ts";
-import "https://deno.land/std@0.198.0/dotenv/load.ts";
+import puppeteer from "npm:puppeteer";
+import { parseArgs } from "jsr:@std/cli@^1.0.0/parse-args";
+import "jsr:@std/dotenv@^0.225.0/load";
 import { putObject } from "https://raw.githubusercontent.com/skymethod/denoflare/v0.5.12/common/r2/put_object.ts";
 import { getJson, writeJson } from "./helpers.ts";
 import { MkeFrozenTreatsImporter } from "./importer.interface.ts";
@@ -26,7 +26,7 @@ if (R2_ORIGIN === undefined) {
   throw new TypeError("Missing R2_ORIGIN environment variable.");
 }
 
-const flags = parse(Deno.args, {
+const flags = parseArgs(Deno.args, {
   string: ["sites", "output"],
 });
 
@@ -46,7 +46,9 @@ if (!flags.output) {
         browserWSEndpoint: `wss://chrome.browserless.io?token=${BROWSERLESS_TOKEN}`,
       });
     } else {
-      browser = await puppeteer.launch();
+      browser = await puppeteer.launch({
+        args: ['--no-sandbox'],
+      });
     }
     
     
@@ -69,9 +71,9 @@ if (!flags.output) {
     
     siteJson.lastUpdatedOn = new Date().toUTCString();
     
-    console.log(siteJson);
 
-    if (IMPORTER_MODE === 'PRODUCTION') {
+    if (IMPORTER_MODE === 'PRODUCTION' || IMPORTER_MODE === 'CRON') {
+	console.log('Uploading...');
       putObject({
         bucket: 'mke-frozen-treats',
         key: 'flavorsOfTheDay.json',

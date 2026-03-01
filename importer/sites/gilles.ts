@@ -1,5 +1,4 @@
-/// <reference types="https://deno.land/x/puppeteer@16.2.0/vendor/puppeteer-core/puppeteer/common/Browser.d.ts" />
-import { Browser } from "https://deno.land/x/puppeteer@16.2.0/vendor/puppeteer-core/puppeteer/common/Browser.js";
+import type { Browser } from "npm:puppeteer";
 import { MkeFrozenTreatsImporter } from "../importer.interface.ts";
 
 export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site): Promise<string> {
