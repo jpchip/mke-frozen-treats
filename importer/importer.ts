@@ -1,4 +1,10 @@
-import puppeteer from "npm:puppeteer";
+import vanillaPuppeteer from "npm:puppeteer";
+import { addExtra } from "npm:puppeteer-extra";
+import StealthPlugin from "npm:puppeteer-extra-plugin-stealth";
+
+// deno-lint-ignore no-explicit-any
+const puppeteer = addExtra(vanillaPuppeteer as any);
+puppeteer.use(StealthPlugin());
 import { parseArgs } from "jsr:@std/cli@^1.0.0/parse-args";
 import "jsr:@std/dotenv@^0.225.0/load";
 import { putObject } from "https://raw.githubusercontent.com/skymethod/denoflare/v0.5.12/common/r2/put_object.ts";
