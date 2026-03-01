@@ -4,7 +4,7 @@ export async function getJson(filePath: string): Promise<any> {
     try {
         return JSON.parse(await Deno.readTextFile(filePath));
     } catch(e) {
-        console.log(filePath + ': ' + e.message);
+        console.log(filePath + ': ' + (e instanceof Error ? e.message : e));
     }
 }
 

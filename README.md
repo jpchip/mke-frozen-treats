@@ -12,12 +12,14 @@ The gist though is this:
 1. run the importer to pull in the flavor of the day from all the sites defined in `sites.json` (or you can point to another file).
 
 ```shell
-deno run -A --unstable importer.ts --sites ./sites.json
+cd importer
+deno run -A importer.ts --sites ./sites.json
 ```
 
 2. Launch the server to view the outputted flavors in a website:
 
 ```shell
+cd server
 deno run --allow-env --allow-net --allow-read server.ts
 ```
 
@@ -34,14 +36,14 @@ deno run --allow-env --allow-net --allow-read server.ts
 
 ### Prerequisites
 
-- Deno >=1.36.1
+- Deno >=2.7.1
 
 ### Setting up Dev
 
 Install Chrome for Puppeteer:
 
 ```shell
-deno run -A --unstable https://deno.land/x/puppeteer@16.2.0/install.ts
+PUPPETEER_PRODUCT=chrome deno run -A npm:puppeteer/install.mjs
 ```
 
 Copy `importer/.env.example` to `.env`. You don't need to touch it beyond that unless you want to make use of browserless.io for scraping and R2 for storing the file.
@@ -93,7 +95,7 @@ This could easily be forked and setup for your own locations! You could even swa
 
 Some sites (*cough* Bubba's *cough*) use hosting that block Bots like Puppeteer, so they cannot be scraped consistently. 
 
-Other places only list their flavors of the day on their facebook page and use inconsistent formatting that can't be scrapped. 
+Other places only list their flavors of the day on their facebook page (or not at all!) and use inconsistent formatting that can't be scrapped. 
 
 ## Licensing
 

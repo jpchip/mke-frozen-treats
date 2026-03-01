@@ -1,5 +1,4 @@
-/// <reference types="https://deno.land/x/puppeteer@16.2.0/vendor/puppeteer-core/puppeteer/common/Browser.d.ts" />
-import { Browser } from "https://deno.land/x/puppeteer@16.2.0/vendor/puppeteer-core/puppeteer/common/Browser.js";
+import type { Browser } from "npm:puppeteer";
 import { MkeFrozenTreatsImporter } from "../importer.interface.ts";
 
 export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site): Promise<string> {
@@ -9,7 +8,7 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
 
     await page.goto(site.url);
 
-    const todayH2 = await page.waitForXPath(`//h2[contains(text(), "Today")]`, { timeout: 2000 });
+    const todayH2 = await page.waitForSelector('::-p-xpath(//h2[contains(text(), "Today")])', { timeout: 2000 });
     const todayDivEl = await page.evaluateHandle(element => 
         element.closest('div.et_pb_column'), todayH2
     );

@@ -1,13 +1,14 @@
-import { serveFile, serveDir } from "https://deno.land/std@0.194.0/http/file_server.ts";
-import { Eta } from "https://deno.land/x/eta@v3.0.3/src/index.ts"
-import "https://deno.land/std@0.198.0/dotenv/load.ts";
+import { serveFile, serveDir } from "jsr:@std/http@^1.0.0/file-server";
+import { Eta } from "jsr:@eta-dev/eta@^3.5.0";
+import "jsr:@std/dotenv@^0.225.0/load";
 
 const FLAVORS_OF_THE_DAY_URL = Deno.env.get("FLAVORS_OF_THE_DAY_URL");
 if (FLAVORS_OF_THE_DAY_URL === undefined) {
   throw new TypeError("Missing FLAVORS_OF_THE_DAY_URL environment variable.");
 }
 
-Deno.serve({port: 80}, (req: Request) => {
+const port = parseInt(Deno.env.get("PORT") ?? "8080");
+Deno.serve({port}, (req: Request) => {
     const pathname = new URL(req.url).pathname;
 
     if (pathname === "/favicon.ico") {
