@@ -12,12 +12,14 @@ The gist though is this:
 1. run the importer to pull in the flavor of the day from all the sites defined in `sites.json` (or you can point to another file).
 
 ```shell
-deno run -A importer/importer.ts --sites ./sites.json
+cd importer
+deno run -A importer.ts --sites ./sites.json
 ```
 
 2. Launch the server to view the outputted flavors in a website:
 
 ```shell
+cd server
 deno run --allow-env --allow-net --allow-read server.ts
 ```
 
