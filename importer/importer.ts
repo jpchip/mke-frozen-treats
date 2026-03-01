@@ -46,32 +46,46 @@ if (!flags.output) {
 
 
   if (flags.sites) {
-    let browser;
-    if (IMPORTER_MODE === 'PRODUCTION') {
-      browser = await puppeteer.connect({
-        browserWSEndpoint: `wss://chrome.browserless.io?token=${BROWSERLESS_TOKEN}`,
-      });
-    } else {
-      browser = await puppeteer.launch({
-        args: ['--no-sandbox'],
-      });
-    }
-    
-    
+    const launchBrowser = async () => {
+      if (IMPORTER_MODE === 'PRODUCTION') {
+        return await puppeteer.connect({
+          browserWSEndpoint: `wss://chrome.browserless.io?token=${BROWSERLESS_TOKEN}`,
+        });
+      } else {
+        return await puppeteer.launch({
+          args: ['--no-sandbox'],
+        });
+      }
+    };
+
+    let browser = await launchBrowser();
 
     const siteJson = await getJson(flags.sites);
     const sites: MkeFrozenTreatsImporter.Site[] = siteJson.sites;
-    
+
     for (const site of sites) {
         const siteScript = await import(site.script);
         try {
           const flavor = await siteScript.load(browser, site);
           site.flavorOfTheDay = flavor;
         } catch(error) {
-          console.log(error);
-          site.flavorOfTheDay = 'See website';
+          const isConnectionError = error instanceof Error && error.message.includes('Connection closed');
+          if (isConnectionError) {
+            console.log('Browser connection lost, restarting...');
+            try { await browser.close(); } catch(_) { /* already dead */ }
+            browser = await launchBrowser();
+            try {
+              const flavor = await siteScript.load(browser, site);
+              site.flavorOfTheDay = flavor;
+            } catch(retryError) {
+              console.log(retryError);
+              site.flavorOfTheDay = 'See website';
+            }
+          } else {
+            console.log(error);
+            site.flavorOfTheDay = 'See website';
+          }
         }
-        
     }
     await browser.close();
     
