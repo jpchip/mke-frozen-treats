@@ -7,6 +7,10 @@
             "flavorOfTheDay": "",
             "locations": [
                 {
+                    "latitude": 43.0319834,
+                    "longitude": -88.1759439
+                },
+                {
                     "latitude": 43.0010124,
                     "longitude": -88.0465273
                 },{
