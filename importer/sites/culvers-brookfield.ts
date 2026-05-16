@@ -8,7 +8,12 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
 
     await page.goto(site.url);
 
-    const flavorEl = await page.waitForSelector(`.RestaurantDetails_containerRestaurantFlavorContentHeading__sLzcV`, { timeout: 2000 });
+    const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const datePrefix = `${month}-${day}`;
+
+    const flavorEl = await page.waitForSelector(`a[id^="${datePrefix}-"]`, { timeout: 2000 });
     
     const flavorOfTheDay = await page.evaluate(
         // deno-lint-ignore no-explicit-any
