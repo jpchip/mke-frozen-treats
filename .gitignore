@@ -1,5 +1,6 @@
 .vscode/settings.json
 importer/.env
 importer/test.json
+importer/*.traineddata
 site/.env
 node_modules/
