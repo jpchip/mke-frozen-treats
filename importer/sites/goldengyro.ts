@@ -6,46 +6,31 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
     const page = await browser.newPage();
     page.emulateTimezone('America/Chicago');
 
-    //even with this user agent in place, sometimes this will fail because of Cloudflare
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 5.1; rv:5.0) Gecko/20100101 Firefox/5.0');
-    await page.goto(site.url);
-    await new Promise(r => setTimeout(r, 1000));
-
-    //get today's date
-    const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
-    const month = today.toLocaleString('en-US', {month: 'long'});
-    
-    // Function to add ordinal suffix to day number
-    function getOrdinalSuffix(day: number): string {
-        if (day > 3 && day < 21) return `${day}th`; // 4th through 20th
-        switch (day % 10) {
-            case 1: return `${day}st`;
-            case 2: return `${day}nd`;
-            case 3: return `${day}rd`;
-            default: return `${day}th`;
-        }
-    }
-    
-    const dayWithSuffix = getOrdinalSuffix(today.getDate());
-    const date = `${month.toUpperCase()}${dayWithSuffix.toUpperCase()}`;
-    
-    // Try with full ordinal suffix first, then fall back to just "T"
-    let flavorEl;
     try {
-        flavorEl = await page.waitForSelector(`[data-aid="MENU_CATEGORY_${date}"] [data-ux="HeadingMinor"]`, { timeout: 2000 });
-    } catch (e) {
-        // If the full suffix doesn't work, try with just the day + "T"
-        const dayNumber = today.getDate();
-        const dateWithT = `${month.toUpperCase()}${dayNumber}T`;
-        flavorEl = await page.waitForSelector(`[data-aid="MENU_CATEGORY_${dateWithT}"] [data-ux="HeadingMinor"]`, { timeout: 2000 });
-    }
-    
-    const flavorOfTheDay = await page.evaluate(
-        // deno-lint-ignore no-explicit-any
-        (flavorEl: any) => flavorEl.textContent,
-        flavorEl
-    );
+        await page.goto(site.url);
+        await page.waitForSelector('[data-ux="HeadingMiddle"]', { timeout: 2000 });
 
-    await page.close();
-    return flavorOfTheDay;
+        // GoDaddy Website Builder truncates the generated data-aid attribute
+        // (e.g. "MENU_CATEGORY_SEPTEMBER2" for both Sept 2nd and Sept 20th),
+        // so days collide if you key off it. Match on the visible heading
+        // text instead, which is unambiguous.
+        const today = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+        const month = today.toLocaleString('en-US', { month: 'long' }).toLowerCase();
+        const day = today.getDate();
+
+        const flavorOfTheDay = await page.evaluate((month: string, day: number) => {
+            const heads = Array.from(document.querySelectorAll('[data-ux="HeadingMiddle"]'));
+            const match = heads.find((el) => {
+                // headings carry inconsistent whitespace: "September  20th", "August   3rd", "August  9th "
+                const m = /^([A-Za-z]+)\s+(\d{1,2})/.exec((el.textContent ?? '').trim());
+                return !!m && m[1].toLowerCase() === month && Number(m[2]) === day;
+            });
+            const category = match?.closest('[data-aid^="MENU_CATEGORY_"]');
+            return category?.querySelector('[data-ux="HeadingMinor"]')?.textContent?.trim() ?? null;
+        }, month, day);
+
+        return flavorOfTheDay ?? 'See website';
+    } finally {
+        await page.close();
+    }
 }
