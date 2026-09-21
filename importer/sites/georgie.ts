@@ -8,20 +8,9 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
 
     await page.goto(site.url);
 
-    const todayH2 = await page.waitForSelector('::-p-xpath(//h2[contains(text(), "Today")])', { timeout: 2000 });
-    const todayDivEl = await page.evaluateHandle(element => 
-        element.closest('div.et_pb_column'), todayH2
-    );
-    
-    
-    const flavorOfTheDay = await todayDivEl.$$eval('img', options => {
-        return options.map(option => option.getAttribute('alt'));
-      });
+    const todayCard = await page.waitForSelector('.flavor-feature-card.is-today', { timeout: 2000 });
+    const flavorOfTheDayText = await todayCard.$eval('.flavor-feature-name', element => element.textContent?.trim() ?? '');
     await page.close();
-    if(flavorOfTheDay.length > 0) {
-        const flavorOfTheDayText = flavorOfTheDay[0].replace('Flavor of the Day - ', '');
-        return flavorOfTheDayText;
-    }
 
-    return '';
+    return flavorOfTheDayText;
 }
