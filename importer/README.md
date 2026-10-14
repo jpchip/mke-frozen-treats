@@ -8,7 +8,7 @@ deno run -A --unstable https://deno.land/x/puppeteer@16.2.0/install.ts
 
 ## Notes on site scripts
 
-Gille's ([sites/gilles.ts](sites/gilles.ts)) publishes its flavor calendar as a single monthly image rather than HTML, so that script downloads the image and runs it through [`tesseract.js`](https://www.npmjs.com/package/tesseract.js) (a WASM build of Tesseract, no system binary required) to OCR out today's flavor. Each run downloads the `eng` OCR traineddata (a few MB) from `cdn.jsdelivr.net`, so the runtime needs outbound network access to that host in addition to the sites being scraped.
+Gille's ([sites/gilles.ts](sites/gilles.ts)) publishes its flavor calendar as a stack of weekly images rather than HTML, so that script screenshots the page element containing those stacked row images and runs the screenshot through [`tesseract.js`](https://www.npmjs.com/package/tesseract.js) (a WASM build of Tesseract, no system binary required) to OCR out today's flavor. Each run downloads the `eng` OCR traineddata (a few MB) from `cdn.jsdelivr.net`, so the runtime needs outbound network access to that host in addition to the sites being scraped.
 
 Robert's ([sites/roberts.ts](sites/roberts.ts)) also publishes a monthly flavor list as a scan, embedded on its page as a PDF that wraps one JPEG per page. That script pulls the JPEGs out of the PDF, OCRs the page headed "`<MONTH> FLAVOR LIST`" with `tesseract.js`, re-OCRs only the flavor column, and maps entries to days using the day numbers where legible (counting forward where a "BOOSTER" / "NEW FLAVOR ALERT" box hides them). It returns `?` if the sheet is for a different month than today. OCR adds roughly 5-15 seconds per run.
 

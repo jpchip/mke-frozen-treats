@@ -2,19 +2,23 @@ import type { Browser } from "npm:puppeteer";
 import Tesseract from "npm:tesseract.js@5";
 import { MkeFrozenTreatsImporter } from "../importer.interface.ts";
 
-// Gilles publishes its Flavor of the Day calendar as a single monthly image
-// (a Wix-hosted PNG whose filename looks like "26-09-FOD-Caledar.png") rather
-// than an HTML calendar. The image is a 7-column (Sun-Sat) grid where each
-// day's cell has a date number in the top-right corner, a photo, the bold
-// flavor name, and (for open days) a "Contains: ..." ingredients line.
+// Gilles publishes its Flavor of the Day calendar as a stack of Wix-hosted
+// PNGs rather than an HTML calendar or a single monthly image: one header
+// image (month name, weekday labels, and the first few days) followed by one
+// image per calendar week, e.g. "October-04-10.png". Stacked together they
+// form the same 7-column (Sun-Sat) grid as before, where each day's cell has
+// a date number in the top-right corner, a photo, the bold flavor name, and
+// (for open days) a "Contains: ..." ingredients line.
 //
-// To read today's flavor we OCR the image with tesseract.js (pure WASM, no
-// system binary) and use the recognized words' bounding boxes to locate
-// today's cell: the column comes from today's weekday, and the row is found
-// by matching the date-number token (right-aligned near the top of each
-// cell) equal to today's day-of-month. Everything between that date number
-// and the next date number in the same column (or the "Contains:" label)
-// is the flavor name.
+// Since the calendar is no longer a single image we can't just download one
+// URL. Instead we screenshot the element containing the stacked row images
+// and OCR that screenshot with tesseract.js (pure WASM, no system binary),
+// using the recognized words' bounding boxes to locate today's cell: the
+// column comes from today's weekday, and the row is found by matching the
+// date-number token (right-aligned near the top of each cell) equal to
+// today's day-of-month. Everything between that date number and the next
+// date number in the same column (or the "Contains:" label) is the flavor
+// name.
 const CALENDAR_TIMEZONE = 'America/Chicago';
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MIN_WORD_CONFIDENCE = 50;
@@ -108,31 +112,80 @@ function extractFlavorFromWords(
     return flavor.length > 0 ? flavor : null;
 }
 
+// Each weekly calendar row is published as its own image with an alt text
+// like "October-04-10.png" (month name, dash, two-digit start day, dash,
+// two-digit end day). This matches those row images without hardcoding a
+// specific month or Wix component id.
+const WEEK_ROW_ALT_PATTERN = /^[A-Za-z]+-\d{2}-\d{2}\.png$/i;
+
 export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site): Promise<string> {
     console.log('Loading Gilles...');
     const page = await browser.newPage();
     page.emulateTimezone(CALENDAR_TIMEZONE);
+    // Wix reflows the calendar to a cramped single column on narrow
+    // viewports, which breaks the 7-column OCR math below, so force a
+    // desktop-width viewport. A 2x device scale factor keeps the screenshot
+    // sharp enough for OCR despite the extra scroll height.
+    await page.setViewport({ width: 1280, height: 1200, deviceScaleFactor: 2 });
 
     await page.goto(site.url);
 
-    const calendarImage = await page.waitForSelector('img[src*="FOD-Caledar"]', { timeout: 5000 });
-    const calendarImageUrl = await calendarImage.evaluate((img) => img.getAttribute('src'));
-    await page.close();
+    await page.waitForFunction(
+        (pattern: string) => [...document.querySelectorAll('img')].some((img) => new RegExp(pattern, 'i').test(img.alt)),
+        { timeout: 5000 },
+        WEEK_ROW_ALT_PATTERN.source,
+    );
 
-    if (!calendarImageUrl) {
+    const weekRowImages = [];
+    for (const imageHandle of await page.$$('img')) {
+        const alt = await imageHandle.evaluate((img) => img.alt);
+        if (WEEK_ROW_ALT_PATTERN.test(alt)) {
+            weekRowImages.push(imageHandle);
+        } else {
+            await imageHandle.dispose();
+        }
+    }
+
+    if (weekRowImages.length === 0) {
+        await page.close();
+        return '?';
+    }
+
+    // The row images are lazy-loaded, so scroll each one into view and wait
+    // for it to actually finish loading before screenshotting; otherwise the
+    // last (lowest) rows can still be blank placeholders.
+    for (const image of weekRowImages) {
+        await image.evaluate((img) => img.scrollIntoView());
+        await page.waitForFunction((img: HTMLImageElement) => img.naturalWidth > 0, {}, image);
+    }
+
+    // Find the lowest common ancestor of the week-row images: that element
+    // also contains the header row (month name, weekday labels, first few
+    // days) above them, and excludes unrelated images elsewhere on the page
+    // (like the separate flavor-of-the-month graphic).
+    const calendarHandle = await page.evaluateHandle((...images: Element[]) => {
+        let ancestor: Element | null = images[0].parentElement;
+        while (ancestor && !images.every((img) => ancestor!.contains(img))) {
+            ancestor = ancestor.parentElement;
+        }
+        return ancestor;
+    }, ...weekRowImages);
+    const calendarElement = calendarHandle.asElement();
+
+    if (!calendarElement) {
+        await page.close();
         return '?';
     }
 
     const { day, weekdayIndex } = getTodayInCalendar();
     if (weekdayIndex === -1) {
+        await page.close();
         return '?';
     }
 
-    const response = await fetch(calendarImageUrl);
-    if (!response.ok) {
-        throw new Error(`Failed to download Gilles calendar image: ${response.status}`);
-    }
-    const bytes = new Uint8Array(await response.arrayBuffer());
+    const bytes = await calendarElement.screenshot({ type: 'png', captureBeyondViewport: true });
+    await page.close();
+
     const { width } = getPngDimensions(bytes);
 
     const result = await Tesseract.recognize(bytes, 'eng');
