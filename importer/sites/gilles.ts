@@ -148,7 +148,7 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
 
     if (weekRowImages.length === 0) {
         await page.close();
-        return '?';
+        return 'See website';
     }
 
     // The row images are lazy-loaded, so scroll each one into view and wait
@@ -174,13 +174,13 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
 
     if (!calendarElement) {
         await page.close();
-        return '?';
+        return 'See website';
     }
 
     const { day, weekdayIndex } = getTodayInCalendar();
     if (weekdayIndex === -1) {
         await page.close();
-        return '?';
+        return 'See website';
     }
 
     const bytes = await calendarElement.screenshot({ type: 'png', captureBeyondViewport: true });
@@ -192,5 +192,5 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
     const words = (result.data.words ?? []) as OcrWord[];
 
     const flavor = extractFlavorFromWords(words, width, day, weekdayIndex);
-    return flavor ?? '?';
+    return flavor ?? 'See website';
 }
