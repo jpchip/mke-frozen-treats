@@ -10,15 +10,14 @@ import { MkeFrozenTreatsImporter } from "../importer.interface.ts";
 // a date number in the top-right corner, a photo, the bold flavor name, and
 // (for open days) a "Contains: ..." ingredients line.
 //
-// Since the calendar is no longer a single image we can't just download one
-// URL. Instead we screenshot the element containing the stacked row images
-// and OCR that screenshot with tesseract.js (pure WASM, no system binary),
-// using the recognized words' bounding boxes to locate today's cell: the
-// column comes from today's weekday, and the row is found by matching the
-// date-number token (right-aligned near the top of each cell) equal to
-// today's day-of-month. Everything between that date number and the next
-// date number in the same column (or the "Contains:" label) is the flavor
-// name.
+// OCR of the whole stacked calendar misses some date badges (the 17th, for
+// example, never comes back as a token even though it is painted in the
+// Saturday column). Each week row's alt text already says which days it
+// covers, e.g. "October-11-17.png", so we screenshot just that image and OCR
+// it. The column still comes from today's weekday. The date-number token in
+// that column anchors the cell, and everything between it and the next date
+// number (or the "Contains:" label) is the flavor name. Days before the first
+// week row (the partial opening week) live in the header image above them.
 const CALENDAR_TIMEZONE = 'America/Chicago';
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MIN_WORD_CONFIDENCE = 50;
@@ -39,17 +38,29 @@ function getPngDimensions(bytes: Uint8Array): { width: number; height: number } 
     };
 }
 
-function getTodayInCalendar(): { day: number; weekdayIndex: number } {
+function getTodayInCalendar(): { day: number; weekdayIndex: number; month: string } {
     const parts = new Intl.DateTimeFormat('en-US', {
         timeZone: CALENDAR_TIMEZONE,
         weekday: 'short',
         day: 'numeric',
+        month: 'long',
     }).formatToParts(new Date());
 
     const day = Number(parts.find((p) => p.type === 'day')?.value);
     const weekdayShort = parts.find((p) => p.type === 'weekday')?.value ?? '';
+    const month = parts.find((p) => p.type === 'month')?.value ?? '';
 
-    return { day, weekdayIndex: WEEKDAYS.indexOf(weekdayShort) };
+    return { day, weekdayIndex: WEEKDAYS.indexOf(weekdayShort), month };
+}
+
+// The date badge is a thin "1" on a yellow bar, which tesseract often reads
+// as "a", "l", or "I" ("17" comes back as "a7"). Only rewrite a single
+// leading lookalike, so a real word is left alone.
+function readDateBadge(text: string): number | null {
+    const match = /^(?:(\d{1,2})|([aIl|])(\d))$/.exec(text);
+    if (!match) return null;
+    const value = Number(match[1] ?? `1${match[3]}`);
+    return value >= 1 && value <= 31 ? value : null;
 }
 
 function extractFlavorFromWords(
@@ -57,6 +68,7 @@ function extractFlavorFromWords(
     imageWidth: number,
     day: number,
     weekdayIndex: number,
+    columnIsCell: boolean,
 ): string | null {
     const colWidth = imageWidth / WEEKDAYS.length;
     const colX0 = weekdayIndex * colWidth;
@@ -70,20 +82,40 @@ function extractFlavorFromWords(
     // today's row between its own date number and the next one.
     const dateTokens = words
         .filter((w) =>
-            /^\d{1,2}$/.test(w.text) &&
+            readDateBadge(w.text) !== null &&
             w.confidence > MIN_WORD_CONFIDENCE &&
             inColumn(w) &&
             w.bbox.x1 >= colX1 - margin
         )
         .sort((a, b) => a.bbox.y0 - b.bbox.y0);
 
-    const dateIndex = dateTokens.findIndex((w) => Number(w.text) === day);
-    if (dateIndex === -1) {
-        return null;
-    }
+    console.log(
+        `Gilles: weekday column x=${Math.round(colX0)}-${Math.round(colX1)}, date tokens: ${
+            dateTokens.map((w) => {
+                const value = readDateBadge(w.text);
+                const label = w.text === String(value) ? w.text : `${w.text} as ${value}`;
+                return `${label}@y${Math.round(w.bbox.y0)}`;
+            }).join(', ') || '(none)'
+        }`,
+    );
 
-    const dateY = dateTokens[dateIndex].bbox.y0;
-    const nextDateY = dateTokens[dateIndex + 1]?.bbox.y0 ?? Infinity;
+    const dateIndex = dateTokens.findIndex((w) => readDateBadge(w.text) === day);
+    let dateY: number;
+    let nextDateY: number;
+    if (dateIndex === -1) {
+        // A week-row image has one day per column, so the column is today's
+        // cell even when the badge itself wasn't read as a number.
+        if (!columnIsCell) {
+            console.log(`Gilles: no date token equal to ${day} in today's column`);
+            return null;
+        }
+        console.log(`Gilles: date badge for ${day} was not read, using the weekday column`);
+        dateY = 0;
+        nextDateY = Infinity;
+    } else {
+        dateY = dateTokens[dateIndex].bbox.y0;
+        nextDateY = dateTokens[dateIndex + 1]?.bbox.y0 ?? Infinity;
+    }
 
     // Every cell has a fixed-height photo directly under the date badge; OCR
     // picks up low-value noise from it (e.g. stray "3:", "pa", "J" tokens).
@@ -101,7 +133,10 @@ function extractFlavorFromWords(
         )
         .sort((a, b) => a.bbox.y0 - b.bbox.y0 || a.bbox.x0 - b.bbox.x0);
 
+    console.log(`Gilles: words in today's cell: ${cellWords.map((w) => w.text).join(' ') || '(none)'}`);
+
     if (cellWords.some((w) => /^closed$/i.test(w.text))) {
+        console.log('Gilles: today is marked Closed');
         return 'Closed';
     }
 
@@ -109,14 +144,26 @@ function extractFlavorFromWords(
     const flavorWords = containsIndex === -1 ? cellWords : cellWords.slice(0, containsIndex);
 
     const flavor = flavorWords.map((w) => w.text).join(' ').trim();
-    return flavor.length > 0 ? flavor : null;
+    if (flavor.length === 0) {
+        console.log('Gilles: no flavor words between the date number and the next date or Contains label');
+        return null;
+    }
+
+    console.log(`Gilles: flavor "${flavor}"`);
+    return flavor;
 }
 
 // Each weekly calendar row is published as its own image with an alt text
 // like "October-04-10.png" (month name, dash, two-digit start day, dash,
 // two-digit end day). This matches those row images without hardcoding a
 // specific month or Wix component id.
-const WEEK_ROW_ALT_PATTERN = /^[A-Za-z]+-\d{2}-\d{2}\.png$/i;
+const WEEK_ROW_ALT_PATTERN = /^([A-Za-z]+)-(\d{2})-(\d{2})\.png$/i;
+
+function parseWeekRowAlt(alt: string): { month: string; start: number; end: number } | null {
+    const match = WEEK_ROW_ALT_PATTERN.exec(alt);
+    if (!match) return null;
+    return { month: match[1], start: Number(match[2]), end: Number(match[3]) };
+}
 
 export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site): Promise<string> {
     console.log('Loading Gilles...');
@@ -137,32 +184,29 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
     );
 
     const weekRowImages = [];
+    const weekRowAlts: string[] = [];
     for (const imageHandle of await page.$$('img')) {
         const alt = await imageHandle.evaluate((img) => img.alt);
         if (WEEK_ROW_ALT_PATTERN.test(alt)) {
             weekRowImages.push(imageHandle);
+            weekRowAlts.push(alt);
         } else {
             await imageHandle.dispose();
         }
     }
+
+    console.log(
+        `Gilles: matched ${weekRowImages.length} week-row image(s): ${weekRowAlts.join(' | ') || '(none)'}`,
+    );
 
     if (weekRowImages.length === 0) {
         await page.close();
         return 'See website';
     }
 
-    // The row images are lazy-loaded, so scroll each one into view and wait
-    // for it to actually finish loading before screenshotting; otherwise the
-    // last (lowest) rows can still be blank placeholders.
-    for (const image of weekRowImages) {
-        await image.evaluate((img) => img.scrollIntoView());
-        await page.waitForFunction((img: HTMLImageElement) => img.naturalWidth > 0, {}, image);
-    }
-
-    // Find the lowest common ancestor of the week-row images: that element
-    // also contains the header row (month name, weekday labels, first few
-    // days) above them, and excludes unrelated images elsewhere on the page
-    // (like the separate flavor-of-the-month graphic).
+    // The ancestor of the week rows also holds the header image for the
+    // partial opening week, and excludes unrelated images elsewhere on the
+    // page (like the flavor-of-the-month graphic).
     const calendarHandle = await page.evaluateHandle((...images: Element[]) => {
         let ancestor: Element | null = images[0].parentElement;
         while (ancestor && !images.every((img) => ancestor!.contains(img))) {
@@ -173,24 +217,64 @@ export async function load(browser: Browser, site: MkeFrozenTreatsImporter.Site)
     const calendarElement = calendarHandle.asElement();
 
     if (!calendarElement) {
+        console.log('Gilles: could not find a common ancestor for the week-row images');
         await page.close();
         return 'See website';
     }
 
-    const { day, weekdayIndex } = getTodayInCalendar();
+    const { day, weekdayIndex, month } = getTodayInCalendar();
+    console.log(`Gilles: looking for ${month} ${day} (${WEEKDAYS[weekdayIndex] ?? `unknown weekday ${weekdayIndex}`})`);
     if (weekdayIndex === -1) {
         await page.close();
         return 'See website';
     }
 
-    const bytes = await calendarElement.screenshot({ type: 'png', captureBeyondViewport: true });
+    const calendarImages = [];
+    for (const imageHandle of await calendarElement.$$('img')) {
+        const alt = await imageHandle.evaluate((img) => img.alt);
+        calendarImages.push({ image: imageHandle, alt, range: parseWeekRowAlt(alt) });
+    }
+
+    const monthRows = calendarImages.filter((image) =>
+        image.range && image.range.month.toLowerCase() === month.toLowerCase()
+    );
+    const match = monthRows.find((image) => image.range && day >= image.range.start && day <= image.range.end);
+
+    let target = match?.image ?? null;
+    if (match) {
+        console.log(`Gilles: using week image ${match.alt}`);
+    } else {
+        const firstWeek = monthRows.find((image) => image.range);
+        const header = calendarImages.find((image) => !image.range);
+        if (firstWeek?.range && day < firstWeek.range.start && header) {
+            target = header.image;
+            console.log(`Gilles: day ${day} is before ${firstWeek.alt}, using header image ${header.alt}`);
+        }
+    }
+
+    if (!target) {
+        console.log(`Gilles: no calendar image covers ${month} ${day}`);
+        await page.close();
+        return 'See website';
+    }
+
+    // Week images are lazy-loaded, so the one we need has to be on screen
+    // and finished loading before the screenshot.
+    await target.evaluate((img) => img.scrollIntoView());
+    await page.waitForFunction((img: HTMLImageElement) => img.naturalWidth > 0, {}, target);
+
+    const bytes = await target.screenshot({ type: 'png', captureBeyondViewport: true });
     await page.close();
 
-    const { width } = getPngDimensions(bytes);
+    const { width, height } = getPngDimensions(bytes);
 
     const result = await Tesseract.recognize(bytes, 'eng');
     const words = (result.data.words ?? []) as OcrWord[];
+    console.log(`Gilles: week image screenshot ${width}x${height}, ${words.length} OCR words`);
 
-    const flavor = extractFlavorFromWords(words, width, day, weekdayIndex);
+    const flavor = extractFlavorFromWords(words, width, day, weekdayIndex, match !== undefined);
+    if (!flavor) {
+        console.log('Gilles: flavor extraction returned nothing, falling back to See website');
+    }
     return flavor ?? 'See website';
 }
