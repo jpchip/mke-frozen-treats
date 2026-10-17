@@ -101,7 +101,7 @@
         },
         { 
             "name": "Robert's", 
-            "url": "https://robertsfrozencustard.com/flavor.html", 
+            "url": "https://robertsfrozencustard.com/page/see-this-months-flavors", 
             "script": "./sites/roberts.ts", 
             "flavorOfTheDay": "",
             "locations": [
