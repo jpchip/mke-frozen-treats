@@ -4,3 +4,4 @@ importer/test.json
 importer/*.traineddata
 site/.env
 node_modules/
+eng.traineddata
