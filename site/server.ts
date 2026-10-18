@@ -53,15 +53,8 @@ async function getFlavorsData(): Promise<FlavorsPayload> {
   }
 }
 
-// Independent custard stands read as more relevant local search results than
-// the long tail of Culver's locations, so they're listed first.
 function sortSitesForDisplay(sites: FlavorSite[]): FlavorSite[] {
-  return [...sites].sort((a, b) => {
-    const aIsCulvers = a.name.startsWith("Culver's");
-    const bIsCulvers = b.name.startsWith("Culver's");
-    if (aIsCulvers !== bIsCulvers) return aIsCulvers ? 1 : -1;
-    return a.name.localeCompare(b.name);
-  });
+  return [...sites].sort((a, b) => a.name.localeCompare(b.name));
 }
 
 const port = parseInt(Deno.env.get("PORT") ?? "8080");
