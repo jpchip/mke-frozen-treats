@@ -70,8 +70,8 @@
   <body class="d-flex flex-column h-100">
     <script type="application/json" id="flavors-data"><%~ it.flavorsJson %></script>
     <div class="container flex-fill">
-        <h1 class="h4 mt-3">Milwaukee Frozen Custard Flavors of the Day</h1>
-        <p class="text-muted">
+        <h1 class="visually-hidden">Milwaukee Frozen Custard Flavors of the Day</h1>
+        <p class="visually-hidden">
           Today's flavor of the day at frozen custard stands around Milwaukee, Brookfield, Wauwatosa, Waukesha, and the surrounding suburbs &mdash; updated daily.
         </p>
         <div x-data="{sites: [], favorites: [], nearby: [], nearbySearchComplete: false, lastUpdatedOn: '', search: '', hideCulvers: false, get filteredSites() { return this.sites.filter(s => { if (this.hideCulvers && s.name.startsWith('Culver\'s')) return false; if (this.search && !s.name.toLowerCase().includes(this.search.toLowerCase()) && !(s.flavorOfTheDay && s.flavorOfTheDay.toLowerCase().includes(this.search.toLowerCase()))) return false; return true; }); }}" x-init="
