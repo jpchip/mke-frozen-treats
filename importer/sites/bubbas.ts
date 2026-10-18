@@ -8,7 +8,8 @@ import { MkeFrozenTreatsImporter } from "../importer.interface.ts";
 // fall back to Browserless stealth + a residential proxy when Cloudflare
 // blocks the droplet.
 const GRAPHQL_URL = 'https://api.popmenu.com/graphql';
-const GRAPHQL_ORIGIN = 'https://api.popmenu.com/';
+const EVENTS_URL = 'https://www.bubbasfrozencustard.com/events';
+const SITE_GRAPHQL_URL = 'https://www.bubbasfrozencustard.com/graphql';
 const BROWSERLESS_BQL_URL = 'https://production-sfo.browserless.io/stealth/bql';
 
 // Popmenu restaurant id for Bubba's; found in the page's Apollo state as
@@ -45,7 +46,8 @@ interface BrowserlessBqlResponse {
     data?: {
         goto?: { status?: number };
         solve?: { found?: boolean; solved?: boolean };
-        graphql?: { value?: string };
+        calendar?: { time?: number };
+        graphql?: { value?: unknown };
     };
     errors?: Array<{ message?: string }>;
 }
@@ -85,33 +87,59 @@ async function fetchViaBrowserless(): Promise<GraphQlHttpResult> {
         throw new Error('Bubbas GraphQL is Cloudflare-blocked from this host and BROWSERLESS_TOKEN is not set');
     }
 
-    // The evaluate script is wrapped in an async function by BrowserQL, so
-    // `await` / `return` work as they would in page.evaluate.
+    const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago' }).format(new Date());
+
+    // Wrapped in an async function by BrowserQL. Same-origin /graphql reuses
+    // the cookies from the events page; if that POST is still challenged, the
+    // rendered FullCalendar "today" title is the same flavor string.
     const evaluateScript = `
-        const response = await fetch(${JSON.stringify(GRAPHQL_URL)}, {
+        if (/just a moment/i.test(document.title)) {
+            return JSON.stringify({ status: 403, body: document.documentElement.outerHTML });
+        }
+        const response = await fetch(${JSON.stringify(SITE_GRAPHQL_URL)}, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Origin': 'https://www.bubbasfrozencustard.com',
-                'Referer': 'https://www.bubbasfrozencustard.com/events',
             },
             body: JSON.stringify({ query: ${JSON.stringify(CALENDAR_QUERY)} }),
             credentials: 'include',
         });
-        return JSON.stringify({ status: response.status, body: await response.text() });
+        const body = await response.text();
+        if (response.status === 200 && !/just a moment/i.test(body)) {
+            return JSON.stringify({ status: response.status, body });
+        }
+        const el = document.querySelector('.fc-event-today .fc-event-title');
+        const flavor = el?.textContent?.trim();
+        if (flavor) {
+            return JSON.stringify({
+                status: 200,
+                body: JSON.stringify({
+                    data: {
+                        calendarEvents: {
+                            records: [{ name: flavor, startAt: ${JSON.stringify(today)}, isAllDay: true }],
+                        },
+                    },
+                }),
+            });
+        }
+        return JSON.stringify({ status: response.status, body });
     `;
 
+    // Load the events page (the zone that actually challenges), not the API
+    // 404. A short solve() catches a Turnstile widget if one is present;
+    // waiting for FullCalendar is what tells us the interstitial is gone.
     const bqlQuery = `
         mutation GetBubbasCalendar {
-            goto(url: ${JSON.stringify(GRAPHQL_ORIGIN)}, waitUntil: load, timeout: 30000) { status }
-            solve(type: cloudflare, timeout: 45000) { found solved time }
+            goto(url: ${JSON.stringify(EVENTS_URL)}, waitUntil: load, timeout: 45000) { status }
+            solve(timeout: 15000) { found solved time }
+            calendar: waitForSelector(selector: ".fc", timeout: 45000) { time }
             graphql: evaluate(content: ${JSON.stringify(evaluateScript)}, timeout: 20000) { value }
         }
     `;
 
     const response = await fetch(
-        `${BROWSERLESS_BQL_URL}?token=${encodeURIComponent(token)}&proxy=residential&timeout=60000`,
+        `${BROWSERLESS_BQL_URL}?token=${encodeURIComponent(token)}&proxy=residential&timeout=120000`,
         {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -131,18 +159,25 @@ async function fetchViaBrowserless(): Promise<GraphQlHttpResult> {
         throw new Error(`Bubbas Browserless stealth returned errors: ${JSON.stringify(json.errors)}`);
     }
 
-    if (json.data?.solve) {
-        console.log(
-            `Bubbas Cloudflare solve: found=${json.data.solve.found} solved=${json.data.solve.solved}`,
-        );
-    }
+    console.log(
+        `Bubbas stealth goto=${json.data?.goto?.status ?? 'none'} solve found=${json.data?.solve?.found} solved=${json.data?.solve?.solved}`,
+    );
 
-    if (!json.data?.graphql?.value) {
+    if (json.data?.graphql?.value == null) {
         throw new Error('Bubbas Browserless stealth returned no GraphQL result');
     }
 
-    const result: GraphQlHttpResult = JSON.parse(json.data.graphql.value);
-    return result;
+    return parseEvaluateValue(json.data.graphql.value);
+}
+
+function parseEvaluateValue(value: unknown): GraphQlHttpResult {
+    if (typeof value === 'string') {
+        return JSON.parse(value);
+    }
+    if (value && typeof value === 'object' && 'status' in value && 'body' in value) {
+        return value as GraphQlHttpResult;
+    }
+    throw new Error(`Bubbas Browserless stealth returned an unexpected result: ${JSON.stringify(value).slice(0, 180)}`);
 }
 
 function flavorFromCalendar(json: CalendarEventsResponse): string {
