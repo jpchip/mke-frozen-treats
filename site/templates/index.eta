@@ -3,18 +3,57 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="List of Flavors of the Day at Milwaukee area Frozen Custard stands.">
+    <meta name="description" content="Today's flavor of the day at frozen custard stands around Milwaukee, Brookfield, Waukesha, and nearby suburbs, including Kopp's, Oscar's, Leduc's, Gilles, Culver's, and more.">
     <meta name="author" content="Jared Chapiewsky">
     <meta name="theme-color" content="#F6D9BE"/>
-    <title>MKE Frozen Treats</title>
+    <title>Milwaukee Frozen Custard Flavors of the Day | MKE Frozen Treats</title>
+    <link rel="canonical" href="<%= it.canonicalUrl %>">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="MKE Frozen Treats">
+    <meta property="og:title" content="Milwaukee Frozen Custard Flavors of the Day">
+    <meta property="og:description" content="Today's flavor of the day at frozen custard stands around Milwaukee, Brookfield, Waukesha, and nearby suburbs, including Kopp's, Oscar's, Leduc's, Gilles, Culver's, and more.">
+    <meta property="og:url" content="<%= it.canonicalUrl %>">
+    <meta property="og:image" content="<%= it.canonicalUrl %>images/logo512.png">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="manifest" href="manifest.json">
     <script src="//unpkg.com/alpinejs" defer></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="index.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script defer src="https://cloud.umami.is/script.js" data-website-id="9849e31b-dfdb-42b3-bdef-3cd1d5216a1c"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Milwaukee Frozen Custard Flavors of the Day",
+      "url": "<%~ it.canonicalUrl %>",
+      "description": "Today's flavor of the day at frozen custard stands around Milwaukee, Brookfield, Waukesha, and nearby suburbs.",
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": [
+          <% it.sites.forEach(function(site, index) { %>
+          {
+            "@type": "ListItem",
+            "position": <%= index + 1 %>,
+            "item": {
+              "@type": "IceCreamShop",
+              "name": <%~ JSON.stringify(site.name) %>,
+              "url": <%~ JSON.stringify(site.url) %>,
+              "servesCuisine": "Frozen Custard",
+              "areaServed": "Milwaukee, WI"<% if (site.locations && site.locations.length === 1) { %>,
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": <%= site.locations[0].latitude %>,
+                "longitude": <%= site.locations[0].longitude %>
+              }
+              <% } %>
+            }
+          }<% if (index < it.sites.length - 1) { %>,<% } %>
+          <% }) %>
+        ]
+      }
+    }
+    </script>
     <style>
       .nav-pills .nav-link.active {
         background-color: #a8b89e;
@@ -29,11 +68,15 @@
     </style>
   </head>
   <body class="d-flex flex-column h-100">
+    <script type="application/json" id="flavors-data"><%~ it.flavorsJson %></script>
     <div class="container flex-fill">
-        <div x-data="{sites: [{name: 'Fetching Flavors...'}], favorites: [], nearby: [], nearbySearchComplete: false, lastUpdatedOn: '', search: '', hideCulvers: false, get filteredSites() { return this.sites.filter(s => { if (this.hideCulvers && s.name.startsWith('Culver\'s')) return false; if (this.search && !s.name.toLowerCase().includes(this.search.toLowerCase()) && !(s.flavorOfTheDay && s.flavorOfTheDay.toLowerCase().includes(this.search.toLowerCase()))) return false; return true; }); }}" x-init="axios.get('<%= it.FLAVORS_OF_THE_DAY_URL %>?v=' + new Date().toISOString().split('T')[0], {headers: {
-          'Cache-Control': 'max-age=3600'
-        }}).then(r => {
-            sites = r.data.sites.sort((a, b) => a.name.localeCompare(b.name));
+        <h1 class="h4 mt-3">Milwaukee Frozen Custard Flavors of the Day</h1>
+        <p class="text-muted">
+          Today's flavor of the day at frozen custard stands around Milwaukee, Brookfield, Wauwatosa, Waukesha, and the surrounding suburbs &mdash; updated daily.
+        </p>
+        <div x-data="{sites: [], favorites: [], nearby: [], nearbySearchComplete: false, lastUpdatedOn: '', search: '', hideCulvers: false, get filteredSites() { return this.sites.filter(s => { if (this.hideCulvers && s.name.startsWith('Culver\'s')) return false; if (this.search && !s.name.toLowerCase().includes(this.search.toLowerCase()) && !(s.flavorOfTheDay && s.flavorOfTheDay.toLowerCase().includes(this.search.toLowerCase()))) return false; return true; }); }}" x-init="
+            const flavorsData = JSON.parse(document.getElementById('flavors-data').textContent);
+            sites = flavorsData.sites;
             const mkeftfavs = localStorage.getItem('mkeftfavs');
             if (mkeftfavs) {
               const favoriteNames = JSON.parse(mkeftfavs);
@@ -77,10 +120,7 @@
               nearbySearchComplete = true;
             }
 
-            lastUpdatedOn = new Date(r.data.lastUpdatedOn).toLocaleString();
-        });
-
-        
+            lastUpdatedOn = flavorsData.lastUpdatedOn ? new Date(flavorsData.lastUpdatedOn).toLocaleString() : '';
 
         function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
           const R = 6371; // Radius of the earth in km
@@ -123,7 +163,7 @@
                     <template x-for="site in filteredSites">
                         <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" x-bind:href="site.url">
                             <div >
-                              <h5 class="mb-1" x-text="site.name"></h5>
+                              <h2 class="h5 mb-1" x-text="site.name"></h2>
                               <p x-text="site.flavorOfTheDay"></p>
                             </div>
                             <span class="badge text-bg-light rounded-pill" title="Add to Favorites" x-on:click="
@@ -148,7 +188,7 @@
                     <template x-for="site in favorites">
                         <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" x-bind:href="site.url">
                             <div>
-                              <h5 class="mb-1" x-text="site.name"></h5>
+                              <h2 class="h5 mb-1" x-text="site.name"></h2>
                               <p x-text="site.flavorOfTheDay"></p>
                             </div>
                         </a>                   
@@ -166,7 +206,7 @@
                     <template x-for="site in nearby">
                         <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" x-bind:href="site.url">
                             <div>
-                              <h5 class="mb-1" x-text="site.name"></h5>
+                              <h2 class="h5 mb-1" x-text="site.name"></h2>
                               <p x-text="site.flavorOfTheDay"></p>
                             </div>
                         </a>                   
@@ -182,7 +222,7 @@
     <nav class="navbar sticky-bottom navbar-expand-sm" style="background-color: #F6D9BE;">
       <div class="container-fluid">
           <a class="navbar-brand" href="#">
-          <img src="images/logo192.png" alt="Bootstrap" width="42" height="42">
+          <img src="images/logo192.png" alt="MKE Frozen Treats" width="42" height="42">
           MKE Frozen Treats</a>
           <span class="navbar-text">
             Frozen Custard Flavors of the Day
